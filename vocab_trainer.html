@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vocab Trainer - Customs Exam Prep</title>
+<style>
+  :root {
+    --bg: #f7f5f2; --card-bg: #ffffff; --text: #22201d; --subtext: #6b6560;
+    --accent: #b5442e; --accent-soft: #f1e3dd; --correct: #2f7d4f; --correct-bg: #e5f4ea;
+    --wrong: #c23b3b; --wrong-bg: #fbe6e6; --border: #e6e1da; --btn-text: #ffffff; --pos-color: #8a5a3a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1917; --card-bg: #262320; --text: #f2efe9; --subtext: #b3aca3;
+      --accent: #e07a5f; --accent-soft: #3a2b25; --correct: #6fcf97; --correct-bg: #1f3327;
+      --wrong: #eb8686; --wrong-bg: #3a2222; --border: #3a352f; --btn-text: #1b1917; --pos-color: #e0a97a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1917; --card-bg: #262320; --text: #f2efe9; --subtext: #b3aca3;
+    --accent: #e07a5f; --accent-soft: #3a2b25; --correct: #6fcf97; --correct-bg: #1f3327;
+    --wrong: #eb8686; --wrong-bg: #3a2222; --border: #3a352f; --btn-text: #1b1917; --pos-color: #e0a97a;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; min-height: 100%; background: var(--bg); color: var(--text);
+    font-family: 'Segoe UI', 'Noto Sans Thai', system-ui, -apple-system, sans-serif;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+    display: flex; justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 480px; padding: 16px 16px 40px; }
+  h1 { font-size: 1.2rem; margin: 6px 0 2px; text-align: center; }
+  .sub { text-align: center; color: var(--subtext); font-size: 0.8rem; margin-bottom: 14px; }
+
+  .tabbar { display: flex; gap: 5px; margin-bottom: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 5px; }
+  .tabbtn { flex: 1; padding: 9px 2px; border: none; border-radius: 10px; background: transparent; color: var(--subtext); font-size: 0.74rem; font-weight: 600; cursor: pointer; }
+  .tabbtn.active { background: var(--accent); color: var(--btn-text); }
+
+  .progress-bar { height: 8px; background: var(--accent-soft); border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.3s ease; }
+
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 22px 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  .qnum { color: var(--subtext); font-size: 0.8rem; margin-bottom: 6px; }
+  .qword { font-size: 1.6rem; font-weight: 700; margin-bottom: 2px; word-break: break-word; display: inline; }
+  .pos-tag { font-size: 0.75rem; color: var(--pos-color); font-style: italic; font-weight: 600; margin-left: 6px; }
+  .qword-meaning { color: var(--subtext); font-size: 0.85rem; margin: 4px 0 14px; min-height: 1.1em; }
+  .qhint { color: var(--subtext); font-size: 0.85rem; margin-bottom: 18px; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt { text-align: left; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 1rem; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+  .opt-main { display: flex; gap: 8px; align-items: baseline; }
+  .opt:active { transform: scale(0.98); }
+  .opt.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+  .opt.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+  .opt.disabled { pointer-events: none; }
+  .opt .letter { font-weight: 700; min-width: 18px; }
+
+  .feedback { margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: var(--accent-soft); font-size: 0.9rem; display: none; }
+  .nextbtn, .primarybtn { margin-top: 18px; width: 100%; padding: 13px; border: none; border-radius: 12px; background: var(--accent); color: var(--btn-text); font-size: 1rem; font-weight: 600; cursor: pointer; display: none; }
+  .primarybtn.show, .nextbtn.show { display: block; }
+
+  .scorewrap { text-align: center; padding: 30px 10px; }
+  .scorewrap .big { font-size: 2.4rem; font-weight: 800; color: var(--accent); margin: 10px 0; }
+  .scorewrap p { color: var(--subtext); }
+  .retrybtn { margin-top: 20px; padding: 13px 24px; border: none; border-radius: 12px; background: var(--accent); color: var(--btn-text); font-size: 1rem; font-weight: 600; cursor: pointer; }
+  .reviewlist { text-align: left; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 14px; }
+  .empty-state { text-align: center; color: var(--subtext); padding: 30px 10px; font-size: 0.9rem; }
+  .empty-state button { margin-top: 14px; }
+
+  /* flashcard (level 1) */
+  .flashcard { min-height: 210px; border-radius: 16px; border: 1px solid var(--border); background: var(--accent-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 16px; cursor: pointer; user-select: none; }
+  .flashcard .fc-word { font-size: 1.8rem; font-weight: 800; color: var(--text); }
+  .flashcard .fc-pos { font-size: 0.8rem; color: var(--pos-color); font-style: italic; margin-top: 4px; }
+  .flashcard .fc-meaning { font-size: 1.1rem; color: var(--accent); font-weight: 700; margin-top: 10px; display: none; }
+  .flashcard .fc-example { font-size: 0.85rem; color: var(--subtext); font-style: italic; margin-top: 8px; display: none; }
+  .flashcard.flipped .fc-meaning, .flashcard.flipped .fc-example { display: block; }
+  .flashcard .fc-hint { font-size: 0.75rem; color: var(--subtext); margin-top: 14px; }
+  .fc-audio-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--card-bg); color: var(--accent); font-size: 1.05rem; cursor: pointer; margin-top: 8px; }
+  .fc-controls { display: flex; gap: 8px; margin-top: 14px; }
+  .fc-controls button { flex: 1; padding: 12px 6px; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+  .fc-controls button.fc-known { background: var(--correct-bg); color: var(--correct); border-color: var(--correct); }
+  .fc-controls button.fc-unknown { background: var(--wrong-bg); color: var(--wrong); border-color: var(--wrong); }
+
+  /* fill (level 3) */
+  .fillset-item { margin-bottom: 14px; font-size: 1rem; line-height: 1.6; }
+  .fillset-num { color: var(--subtext); font-size: 0.78rem; margin-right: 4px; }
+  .blank-slot { display: inline-flex; align-items: center; justify-content: center; min-width: 90px; padding: 4px 10px; margin: 0 2px; border-bottom: 2px solid var(--accent); border-radius: 6px; background: var(--accent-soft); color: var(--text); font-weight: 600; cursor: pointer; }
+  .blank-slot.selected { outline: 2px solid var(--accent); }
+  .blank-slot.empty { color: var(--subtext); font-weight: 400; font-style: italic; }
+  .blank-slot.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+  .blank-slot.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+  .wordbank { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; padding-top: 14px; border-top: 1px dashed var(--border); }
+  .wordbank-item { padding: 9px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+  .wordbank-item.used { display: none; }
+  .wordbank-hint { font-size: 0.78rem; color: var(--subtext); margin-bottom: 4px; }
+
+  /* spell (level 4) */
+  .fillinput { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 1rem; margin-bottom: 12px; }
+  .fillinput:focus { outline: 2px solid var(--accent); }
+  .srs-thai { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+
+  /* shared */
+  .srs-levelbar { display: flex; gap: 6px; margin-bottom: 10px; }
+  .srs-levelbar .lvl { flex: 1; text-align: center; padding: 6px 2px; border-radius: 8px; font-size: 0.68rem; font-weight: 700; background: var(--card-bg); border: 1px solid var(--border); color: var(--subtext); }
+  .srs-levelbar .lvl.current { background: var(--accent); color: var(--btn-text); border-color: var(--accent); }
+  .srs-badge { display: inline-block; padding: 3px 10px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-size: 0.72rem; font-weight: 700; margin-bottom: 10px; }
+  .srs-audio-btn { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--accent-soft); color: var(--accent); font-size: 1.1rem; cursor: pointer; margin-left: 8px; }
+  .srs-word-row { display: flex; align-items: center; justify-content: center; gap: 4px; }
+  .srs-example { font-size: 0.85rem; color: var(--subtext); font-style: italic; margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 10px; }
+  .srs-summary-row { display: flex; justify-content: space-between; padding: 8px 4px; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+  .srs-up { color: var(--correct); font-weight: 700; }
+  .srs-down { color: var(--wrong); font-weight: 700; }
+  .srs-same { color: var(--subtext); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🧠 Vocab Trainer</h1>
+  <div class="sub">ฝึกคำศัพท์เตรียมสอบศุลกากร</div>
+
+  <div class="tabbar">
+    <button class="tabbtn active" id="tabBtn1" onclick="openTab(1)">📇 การ์ด</button>
+    <button class="tabbtn" id="tabBtn2" onclick="openTab(2)">✅ ตัวเลือก</button>
+    <button class="tabbtn" id="tabBtn3" onclick="openTab(3)">✏️ เติมคำ</button>
+    <button class="tabbtn" id="tabBtn4" onclick="openTab(4)">⌨️ สะกดคำ</button>
+  </div>
+
+  <div id="section-1">
+    <div class="srs-levelbar" id="bar1"></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog1" style="width:0%"></div></div>
+    <div class="card" id="card1"></div>
+    <div class="card scorewrap" id="sum1" style="display:none;"></div>
+  </div>
+  <div id="section-2" style="display:none;">
+    <div class="srs-levelbar" id="bar2"></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog2" style="width:0%"></div></div>
+    <div class="card" id="card2"></div>
+    <div class="card scorewrap" id="sum2" style="display:none;"></div>
+  </div>
+  <div id="section-3" style="display:none;">
+    <div class="srs-levelbar" id="bar3"></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog3" style="width:0%"></div></div>
+    <div class="card" id="card3"></div>
+    <div class="card scorewrap" id="sum3" style="display:none;"></div>
+  </div>
+  <div id="section-4" style="display:none;">
+    <div class="srs-levelbar" id="bar4"></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog4" style="width:0%"></div></div>
+    <div class="card" id="card4"></div>
+    <div class="card scorewrap" id="sum4" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+/* ============ DATA: 28 headwords with curated options ============ */
+const questions = [
+  { word: "Comprise", pos: "v.", meaning: "ประกอบด้วย",
+    options: [{ text: "Lucrative", pos: "adj.", meaning: "ทำกำไรงาม" },{ text: "Confiscate", pos: "v.", meaning: "ยึดทรัพย์" },{ text: "Redundant", pos: "adj.", meaning: "ซ้ำซ้อน/เกินจำเป็น" },{ text: "Consist of", pos: "v.", meaning: "ประกอบด้วย" }], answer: 3 },
+  { word: "Contemporary", pos: "adj.", meaning: "ร่วมสมัย",
+    options: [{ text: "Flaw", pos: "n.", meaning: "ข้อบกพร่อง" },{ text: "Onset", pos: "n.", meaning: "การเริ่มต้น" },{ text: "Modern", pos: "adj.", meaning: "ทันสมัย" },{ text: "Succumb", pos: "v.", meaning: "ยอมแพ้/พ่ายแพ้ต่อ" }], answer: 2 },
+  { word: "Scrutinize", pos: "v.", meaning: "ตรวจสอบอย่างละเอียด",
+    options: [{ text: "Isolated", pos: "adj.", meaning: "โดดเดี่ยว/แยกออกมา" },{ text: "Distort", pos: "v.", meaning: "บิดเบือน" },{ text: "Sequence", pos: "n.", meaning: "ลำดับ" },{ text: "Examine", pos: "v.", meaning: "ตรวจสอบ" }], answer: 3 },
+  { word: "Dispense", pos: "v.", meaning: "แจกจ่าย",
+    options: [{ text: "Skeptical", pos: "adj.", meaning: "ขี้สงสัย/ไม่เชื่อง่ายๆ" },{ text: "Distribute", pos: "v.", meaning: "แจกจ่าย" },{ text: "Obscure", pos: "adj.", meaning: "คลุมเครือ" },{ text: "Banish", pos: "v.", meaning: "เนรเทศ/ขับไล่" }], answer: 1 },
+  { word: "Ridicule", pos: "v.", meaning: "เยาะเย้ย/ล้อเลียน",
+    options: [{ text: "Incidence", pos: "n.", meaning: "อัตราการเกิดขึ้น" },{ text: "Frugal", pos: "adj.", meaning: "ประหยัด" },{ text: "Vital", pos: "adj.", meaning: "สำคัญยิ่ง" },{ text: "Mock", pos: "v.", meaning: "ล้อเลียน" }], answer: 3 },
+  { word: "Venture", pos: "n./v.", meaning: "กิจการเสี่ยง/เสี่ยงทำ",
+    options: [{ text: "Assail", pos: "v.", meaning: "โจมตี" },{ text: "Fluctuate", pos: "v.", meaning: "ผันผวน/ขึ้นๆลงๆ" },{ text: "Risk", pos: "n./v.", meaning: "เสี่ยง" },{ text: "Dubious", pos: "adj.", meaning: "น่าสงสัย/ไม่แน่ใจ" }], answer: 2 },
+  { word: "Arbitrary", pos: "adj.", meaning: "ตามอำเภอใจ ไม่มีเหตุผล",
+    options: [{ text: "Unreasonable", pos: "adj.", meaning: "ไม่มีเหตุผล" },{ text: "Ceremony", pos: "n.", meaning: "พิธีการ" },{ text: "Willing", pos: "adj.", meaning: "เต็มใจ" },{ text: "Patriotic", pos: "adj.", meaning: "รักชาติ" }], answer: 0 },
+  { word: "Affluent", pos: "adj.", meaning: "ร่ำรวย",
+    options: [{ text: "Invalid", pos: "adj.", meaning: "ไม่ถูกต้อง/ใช้ไม่ได้" },{ text: "Guilty", pos: "adj.", meaning: "มีความผิด" },{ text: "Wealthy", pos: "adj.", meaning: "ร่ำรวย" },{ text: "Certain", pos: "adj.", meaning: "แน่นอน" }], answer: 2 },
+  { word: "Eccentric", pos: "adj.", meaning: "ประหลาด/พิลึก",
+    options: [{ text: "Odd", pos: "adj.", meaning: "แปลก" },{ text: "Useless", pos: "adj.", meaning: "ไร้ประโยชน์" },{ text: "Logical", pos: "adj.", meaning: "มีเหตุผล" },{ text: "Forgive", pos: "v.", meaning: "ให้อภัย" }], answer: 0 },
+  { word: "Bestow", pos: "v.", meaning: "มอบให้/ประทานให้",
+    options: [{ text: "Exploit", pos: "v.", meaning: "ฉวยประโยชน์" },{ text: "Provide", pos: "v.", meaning: "จัดหาให้" },{ text: "Fear", pos: "n.", meaning: "ความกลัว" },{ text: "Delicate", pos: "adj.", meaning: "บอบบาง/ละเอียดอ่อน" }], answer: 1 },
+  { word: "Vigorous", pos: "adj.", meaning: "มีพลัง/แข็งแรง",
+    options: [{ text: "Energetic", pos: "adj.", meaning: "กระตือรือร้น/มีพลัง" },{ text: "Preserve", pos: "v.", meaning: "อนุรักษ์/ถนอมรักษา" },{ text: "Enrich", pos: "v.", meaning: "ทำให้อุดมสมบูรณ์ขึ้น" },{ text: "Exploit", pos: "v.", meaning: "ฉวยประโยชน์" }], answer: 0 },
+  { word: "Ample", pos: "adj.", meaning: "มากเพียงพอ",
+    options: [{ text: "Plentiful", pos: "adj.", meaning: "อุดมสมบูรณ์" },{ text: "Deficient", pos: "adj.", meaning: "ขาดแคลน/ไม่เพียงพอ" },{ text: "Construct", pos: "v.", meaning: "สร้าง/ก่อสร้าง" },{ text: "Valuable", pos: "adj.", meaning: "มีค่า" }], answer: 0 },
+  { word: "Obstinate", pos: "adj.", meaning: "ดื้อรั้น",
+    options: [{ text: "Recall", pos: "v.", meaning: "เรียกคืน/นึกย้อน" },{ text: "Prevent", pos: "v.", meaning: "ป้องกัน" },{ text: "Harmless", pos: "adj.", meaning: "ไม่เป็นอันตราย" },{ text: "Stubborn", pos: "adj.", meaning: "ดื้อรั้น" }], answer: 3 },
+  { word: "Refrain", pos: "v.", meaning: "ละเว้น/หลีกเลี่ยง (refrain from)",
+    options: [{ text: "Avoid", pos: "v.", meaning: "หลีกเลี่ยง" },{ text: "Inborn", pos: "adj.", meaning: "ติดตัวมาแต่กำเนิด" },{ text: "Encourage", pos: "v.", meaning: "ให้กำลังใจ/สนับสนุน" },{ text: "Jealous", pos: "adj.", meaning: "อิจฉา" }], answer: 0 },
+  { word: "Vocation", pos: "n.", meaning: "อาชีพที่รู้สึกเป็น calling",
+    options: [{ text: "Profession", pos: "n.", meaning: "อาชีพ" },{ text: "Intellectual", pos: "adj./n.", meaning: "ทางปัญญา/นักวิชาการ" },{ text: "Flexible", pos: "adj.", meaning: "ยืดหยุ่น" },{ text: "Vision", pos: "n.", meaning: "วิสัยทัศน์" }], answer: 0 },
+  { word: "Tedious", pos: "adj.", meaning: "น่าเบื่อ (แบบยืดเยื้อ)",
+    options: [{ text: "Boring", pos: "adj.", meaning: "น่าเบื่อ" },{ text: "Expensive", pos: "adj.", meaning: "แพง" },{ text: "Proud", pos: "adj.", meaning: "ภูมิใจ" },{ text: "Unbearable", pos: "adj.", meaning: "ทนไม่ไหว" }], answer: 0 },
+  { word: "Coerce", pos: "v.", meaning: "บังคับ/ข่มขู่ให้ทำ",
+    options: [{ text: "Absurd", pos: "adj.", meaning: "ไร้สาระ/ไม่สมเหตุสมผล" },{ text: "Force", pos: "v.", meaning: "บังคับ" },{ text: "Peculiar", pos: "adj.", meaning: "แปลกประหลาด" },{ text: "Fate", pos: "n.", meaning: "โชคชะตา" }], answer: 1 },
+  { word: "Explicit", pos: "adj.", meaning: "ชัดเจน ตรงไปตรงมา",
+    options: [{ text: "Clear and direct", pos: "adj. phrase", meaning: "ชัดเจน ตรงไปตรงมา" },{ text: "Hidden", pos: "adj.", meaning: "ซ่อนอยู่" },{ text: "Random", pos: "adj.", meaning: "สุ่ม" },{ text: "Weak", pos: "adj.", meaning: "อ่อนแอ" }], answer: 0 },
+  { word: "Ambiguous", pos: "adj.", meaning: "กำกวม ตีความได้หลายแบบ",
+    options: [{ text: "Definite", pos: "adj.", meaning: "ชัดเจนแน่นอน" },{ text: "Open to more than one meaning", pos: "adj. phrase", meaning: "ตีความได้หลายแบบ" },{ text: "Boring", pos: "adj.", meaning: "น่าเบื่อ" },{ text: "Cheap", pos: "adj.", meaning: "ราคาถูก" }], answer: 1 },
+  { word: "Vague", pos: "adj.", meaning: "คลุมเครือ ไม่ชัดเจน",
+    options: [{ text: "Precise", pos: "adj.", meaning: "แม่นยำ" },{ text: "Loud", pos: "adj.", meaning: "เสียงดัง" },{ text: "Unclear", pos: "adj.", meaning: "ไม่ชัดเจน" },{ text: "Fast", pos: "adj.", meaning: "เร็ว" }], answer: 2 },
+  { word: "Curtail", pos: "v.", meaning: "ลด/จำกัด",
+    options: [{ text: "Expand", pos: "v.", meaning: "ขยาย" },{ text: "Reduce / limit", pos: "v. phrase", meaning: "ลด/จำกัด" },{ text: "Repeat", pos: "v.", meaning: "ทำซ้ำ" },{ text: "Celebrate", pos: "v.", meaning: "ฉลอง" }], answer: 1 },
+  { word: "Outraged", pos: "adj.", meaning: "โกรธมาก",
+    options: [{ text: "Delighted", pos: "adj.", meaning: "ดีใจมาก" },{ text: "Very angry", pos: "adj. phrase", meaning: "โกรธมาก" },{ text: "Confused", pos: "adj.", meaning: "สับสน" },{ text: "Relaxed", pos: "adj.", meaning: "ผ่อนคลาย" }], answer: 1 },
+  { word: "Shunned", pos: "v. (past participle)", meaning: "ถูกหลีกเลี่ยง/ปฏิเสธ",
+    options: [{ text: "Widely avoided", pos: "v. phrase", meaning: "ถูกหลีกเลี่ยงอย่างกว้างขวาง" },{ text: "Warmly welcomed", pos: "v. phrase", meaning: "ได้รับการต้อนรับอย่างอบอุ่น" },{ text: "Carefully studied", pos: "v. phrase", meaning: "ถูกศึกษาอย่างละเอียด" },{ text: "Loudly praised", pos: "v. phrase", meaning: "ถูกยกย่องอย่างมาก" }], answer: 0 },
+  { word: "Utterly", pos: "adv.", meaning: "อย่างสิ้นเชิง",
+    options: [{ text: "Partially", pos: "adv.", meaning: "บางส่วน" },{ text: "Rarely", pos: "adv.", meaning: "แทบไม่" },{ text: "Completely", pos: "adv.", meaning: "อย่างสมบูรณ์" },{ text: "Occasionally", pos: "adv.", meaning: "เป็นครั้งคราว" }], answer: 2 },
+  { word: "Considerable", pos: "adj.", meaning: "ค่อนข้างมาก/พอสมควร",
+    options: [{ text: "Fairly large in amount", pos: "adj. phrase", meaning: "ค่อนข้างมาก" },{ text: "Very small", pos: "adj.", meaning: "เล็กมาก" },{ text: "Uncertain", pos: "adj.", meaning: "ไม่แน่นอน" },{ text: "Illegal", pos: "adj.", meaning: "ผิดกฎหมาย" }], answer: 0 },
+  { word: "Impose", pos: "v.", meaning: "บังคับใช้/กำหนด",
+    options: [{ text: "To remove", pos: "v.", meaning: "เอาออก" },{ text: "To force something to be accepted", pos: "v. phrase", meaning: "บังคับให้ยอมรับ" },{ text: "To ignore", pos: "v.", meaning: "เพิกเฉย" },{ text: "To forgive", pos: "v.", meaning: "ให้อภัย" }], answer: 1 },
+  { word: "Revenue", pos: "n.", meaning: "รายได้ (โดยเฉพาะของรัฐ)",
+    options: [{ text: "Income, especially of a government", pos: "n. phrase", meaning: "รายได้ โดยเฉพาะของรัฐ" },{ text: "Expense", pos: "n.", meaning: "รายจ่าย" },{ text: "Debt", pos: "n.", meaning: "หนี้สิน" },{ text: "Loss", pos: "n.", meaning: "ขาดทุน" }], answer: 0 },
+  { word: "Milestone", pos: "n.", meaning: "จุดเปลี่ยนสำคัญ",
+    options: [{ text: "An important stage or event", pos: "n. phrase", meaning: "ขั้นตอน/เหตุการณ์สำคัญ" },{ text: "A small mistake", pos: "n.", meaning: "ความผิดพลาดเล็กน้อย" },{ text: "A type of tax", pos: "n.", meaning: "ภาษีชนิดหนึ่ง" },{ text: "A legal document", pos: "n.", meaning: "เอกสารทางกฎหมาย" }], answer: 0 }
+];
+
+const fillBlankBank = [
+  { word: "Comprise", sentence: "The exam is said to _____ three sections: grammar, vocabulary, and reading." },
+  { word: "Contemporary", sentence: "She has a taste for _____ art rather than classical styles." },
+  { word: "Scrutinize", sentence: "Customs officers must _____ every document carefully before approval." },
+  { word: "Dispense", sentence: "The machine is used to _____ medicine to patients automatically." },
+  { word: "Ridicule", sentence: "He was afraid his classmates would _____ his accent." },
+  { word: "Venture", sentence: "Starting a new business is always a risky _____." },
+  { word: "Arbitrary", sentence: "The rule felt completely _____, with no clear reason behind it." },
+  { word: "Affluent", sentence: "They live in an _____ neighborhood full of large houses." },
+  { word: "Eccentric", sentence: "My uncle is a bit _____; he collects vintage typewriters." },
+  { word: "Bestow", sentence: "The university decided to _____ an honorary degree on the scientist." },
+  { word: "Vigorous", sentence: "The coach demanded a _____ effort from every player." },
+  { word: "Ample", sentence: "There was _____ time to finish the exam before the bell rang." },
+  { word: "Obstinate", sentence: "Despite everyone's advice, he remained _____ and refused to change his plan." },
+  { word: "Refrain", sentence: "Passengers are asked to _____ from smoking on the train." },
+  { word: "Vocation", sentence: "Teaching was more than a job to her; it was her true _____." },
+  { word: "Tedious", sentence: "Filling out the same form over and over was extremely _____." },
+  { word: "Coerce", sentence: "No one can _____ you into signing a contract against your will." },
+  { word: "Explicit", sentence: "The instructions were _____, leaving no room for misunderstanding." },
+  { word: "Ambiguous", sentence: "His answer was so _____ that no one knew if he agreed or not." },
+  { word: "Vague", sentence: "The directions she gave were too _____ to follow." },
+  { word: "Curtail", sentence: "The government decided to _____ public spending this year." },
+  { word: "Outraged", sentence: "Residents were _____ when they heard about the new tax." },
+  { word: "Shunned", sentence: "After the scandal, he was _____ by his former colleagues." },
+  { word: "Utterly", sentence: "The plan was _____ impossible to carry out in one day." },
+  { word: "Considerable", sentence: "The company spent a _____ amount of money on advertising." },
+  { word: "Impose", sentence: "The government plans to _____ a new tax on imported goods." },
+  { word: "Revenue", sentence: "The company's _____ increased by twenty percent last year." },
+  { word: "Milestone", sentence: "Passing the exam was an important _____ in her career." }
+];
+
+/* ============ vocab pool (all 118 words, deduped, no multi-word phrases) ============ */
+const vocabMap = new Map();
+questions.forEach(q => {
+  vocabMap.set(q.word.toLowerCase(), { word: q.word, pos: q.pos, meaning: q.meaning });
+  q.options.forEach(o => {
+    if (!vocabMap.has(o.text.toLowerCase())) vocabMap.set(o.text.toLowerCase(), { word: o.text, pos: o.pos, meaning: o.meaning });
+  });
+});
+const vocabBank = Array.from(vocabMap.values()).filter(v => !v.word.includes(' '));
+
+/* example sentences for every word */
+const exampleMap = {};
+fillBlankBank.forEach(f => { exampleMap[f.word.toLowerCase()] = f.sentence.replace('_____', f.word); });
+const extraExamples = {
+  "lucrative": "She left her job for a more lucrative career in finance.",
+  "confiscate": "Customs officers confiscated the smuggled goods at the border.",
+  "redundant": "Many workers were made redundant after the factory closed.",
+  "flaw": "The engineer found a serious flaw in the design.",
+  "onset": "Doctors noticed the onset of the illness early.",
+  "modern": "The museum features modern art from the last decade.",
+  "succumb": "He finally succumbed to the pressure and agreed.",
+  "isolated": "The village was isolated after the bridge collapsed.",
+  "distort": "The old mirror distorted his reflection.",
+  "sequence": "Follow the correct sequence of steps to install the software.",
+  "examine": "The doctor examined the patient carefully.",
+  "skeptical": "She remained skeptical about his excuse.",
+  "distribute": "Volunteers distributed food to the flood victims.",
+  "obscure": "The meaning of the poem was obscure to most readers.",
+  "banish": "The king banished the traitor from the kingdom.",
+  "incidence": "The incidence of the disease dropped after the vaccine.",
+  "frugal": "He lived a frugal life despite his wealth.",
+  "vital": "Clean water is vital for survival.",
+  "mock": "The other kids used to mock his accent.",
+  "assail": "Critics assailed the new policy immediately.",
+  "fluctuate": "Stock prices fluctuate every day.",
+  "risk": "Investing in startups involves a lot of risk.",
+  "dubious": "The salesman made some dubious claims about the product.",
+  "unreasonable": "His demands seemed completely unreasonable.",
+  "ceremony": "They held a small ceremony to mark the opening.",
+  "willing": "She was willing to help despite the risk.",
+  "patriotic": "He felt patriotic whenever he heard the national anthem.",
+  "invalid": "Your ticket is invalid after the expiry date.",
+  "guilty": "The jury found him guilty of fraud.",
+  "wealthy": "They moved into a wealthy neighborhood.",
+  "certain": "She was certain she had locked the door.",
+  "odd": "It was odd that he didn't show up.",
+  "useless": "The broken umbrella was useless in the storm.",
+  "logical": "His explanation was clear and logical.",
+  "forgive": "She decided to forgive her friend for the mistake.",
+  "exploit": "The company was accused of exploiting its workers.",
+  "provide": "The shelter provides food and beds for the homeless.",
+  "fear": "His fear of heights kept him off the roof.",
+  "delicate": "Handle the antique vase; it's very delicate.",
+  "energetic": "The puppy was energetic and never stopped running.",
+  "preserve": "They worked hard to preserve the old building.",
+  "enrich": "Reading widely can enrich your vocabulary.",
+  "plentiful": "Fresh fruit was plentiful at the market.",
+  "deficient": "His diet was deficient in vitamins.",
+  "construct": "Workers began to construct the new bridge.",
+  "valuable": "The painting turned out to be very valuable.",
+  "recall": "She couldn't recall where she left her keys.",
+  "prevent": "Regular exercise can prevent many illnesses.",
+  "harmless": "The spider looked scary but was harmless.",
+  "stubborn": "He was too stubborn to change his mind.",
+  "avoid": "Try to avoid heavy traffic during rush hour.",
+  "inborn": "Her talent for music seemed inborn.",
+  "encourage": "Teachers should encourage students to ask questions.",
+  "jealous": "He felt jealous when his friend got the promotion.",
+  "profession": "Medicine is a demanding profession.",
+  "intellectual": "The debate attracted many intellectuals.",
+  "flexible": "Our schedule is flexible, so we can meet anytime.",
+  "vision": "The CEO shared her vision for the company's future.",
+  "boring": "The lecture was so boring that students fell asleep.",
+  "expensive": "That restaurant is too expensive for a casual dinner.",
+  "proud": "Her parents were proud of her achievement.",
+  "unbearable": "The heat in the room was unbearable.",
+  "absurd": "The idea of walking to the moon sounds absurd.",
+  "force": "No one can force you to sign the contract.",
+  "peculiar": "There was a peculiar smell coming from the kitchen.",
+  "fate": "He believed it was fate that brought them together.",
+  "hidden": "There was a hidden message in the letter.",
+  "random": "The winner was chosen at random.",
+  "weak": "After the illness, he felt weak for weeks.",
+  "definite": "We need a definite answer by tomorrow.",
+  "cheap": "The tickets were surprisingly cheap this season.",
+  "precise": "The surgeon's movements were precise and careful.",
+  "loud": "The music was too loud to hear each other talk.",
+  "unclear": "His instructions were unclear, so we got lost.",
+  "fast": "The new train is much faster than the old one.",
+  "expand": "The company plans to expand into new markets.",
+  "repeat": "Could you repeat the question, please?",
+  "celebrate": "They celebrated the victory with a big party.",
+  "delighted": "She was delighted to receive the award.",
+  "confused": "I felt confused by the complicated instructions.",
+  "relaxed": "He looked relaxed after his vacation.",
+  "partially": "The project was only partially completed.",
+  "rarely": "He rarely eats fast food.",
+  "completely": "The building was completely destroyed by the fire.",
+  "occasionally": "We occasionally meet for coffee on weekends.",
+  "uncertain": "The future of the project remains uncertain.",
+  "illegal": "Parking here is illegal.",
+  "expense": "Travel expense will be reimbursed by the company.",
+  "debt": "They struggled to pay off their debt.",
+  "loss": "The company reported a huge loss last year."
+};
+Object.keys(extraExamples).forEach(k => { if (!exampleMap[k]) exampleMap[k] = extraExamples[k]; });
+
+function speak(word) {
+  try {
+    if (!word || !('speechSynthesis' in window)) return;
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US'; u.rate = 0.9;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function getFillSentence(word) {
+  const curated = fillBlankBank.find(f => f.word.toLowerCase() === word.toLowerCase());
+  if (curated) return curated.sentence;
+  const ex = exampleMap[word.toLowerCase()];
+  if (!ex) return null;
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(escaped, 'i');
+  if (!re.test(ex)) return null;
+  return ex.replace(re, '_____');
+}
+
+/* ============ SRS pool: every word, linked group info for smarter quiz distractors ============ */
+const srsPool = vocabBank.map(v => {
+  const asHead = questions.find(q => q.word.toLowerCase() === v.word.toLowerCase());
+  let group = null;
+  if (asHead) {
+    group = [asHead.word, ...asHead.options.map(o => o.text)];
+  } else {
+    const parentQ = questions.find(q => q.options.some(o => o.text.toLowerCase() === v.word.toLowerCase()));
+    if (parentQ) group = [parentQ.word, ...parentQ.options.map(o => o.text)];
+  }
+  return { word: v.word, pos: v.pos, meaning: v.meaning, example: exampleMap[v.word.toLowerCase()] || "", group };
+});
+
+function getQuizOptions(w) {
+  let poolWords;
+  if (w.group && w.group.length >= 4) {
+    poolWords = w.group.filter(g => g.toLowerCase() !== w.word.toLowerCase());
+  } else {
+    poolWords = [];
+  }
+  // top up with random words from the whole bank if the group is too small
+  if (poolWords.length < 3) {
+    const extra = vocabBank.filter(v => v.word.toLowerCase() !== w.word.toLowerCase() && !poolWords.includes(v.word)).map(v => v.word);
+    poolWords = poolWords.concat(shuffleArr(extra));
+  }
+  const distractorWords = shuffleArr(poolWords).slice(0, 3);
+  const distractors = distractorWords.map(dw => {
+    const found = vocabMap.get(dw.toLowerCase());
+    return { text: found ? found.meaning : dw };
+  });
+  const combined = shuffleArr([{ text: w.meaning }, ...distractors]);
+  const answer = combined.findIndex(o => o.text === w.meaning);
+  return { options: combined, answer };
+}
+
+/* ============ persistent state ============ */
+const LEVEL_NAMES = { 1: "การ์ด", 2: "ตัวเลือก", 3: "เติมคำ", 4: "สะกดคำ", 5: "จบแล้ว" };
+const GAP = { 1: 1, 2: 2, 3: 5, 4: 5, 5: 18 };
+const MAX_ACTIVE_LEVEL = 4; // level 5 = mastered, retired from all tabs
+
+let srsState = {};
+let roundByLevel = { 1: 0, 2: 0, 3: 0, 4: 0 };
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('srsStateV2');
+    const parsed = raw ? JSON.parse(raw) : {};
+    srsPool.forEach(w => { if (!parsed[w.word]) parsed[w.word] = { level: 1, streak: 0, due: 0 }; });
+    srsState = parsed;
+  } catch (e) {
+    srsState = {};
+    srsPool.forEach(w => { srsState[w.word] = { level: 1, streak: 0, due: 0 }; });
+  }
+  try {
+    const raw2 = localStorage.getItem('roundByLevelV2');
+    roundByLevel = raw2 ? JSON.parse(raw2) : { 1: 0, 2: 0, 3: 0, 4: 0 };
+  } catch (e) { roundByLevel = { 1: 0, 2: 0, 3: 0, 4: 0 }; }
+}
+function saveState() { try { localStorage.setItem('srsStateV2', JSON.stringify(srsState)); } catch (e) {} }
+function saveRounds() { try { localStorage.setItem('roundByLevelV2', JSON.stringify(roundByLevel)); } catch (e) {} }
+
+function recordResult(word, passed) {
+  const entry = srsState[word];
+  const before = entry.level;
+  if (passed) {
+    entry.streak++;
+    if (entry.streak >= 2 && entry.level < 5) { entry.level++; entry.streak = 0; }
+    else if (entry.level === 5) { entry.streak = 0; }
+  } else {
+    entry.streak = 0;
+    if (entry.level > 1) entry.level--;
+  }
+  const newLevel = Math.min(entry.level, 5);
+  const roundRef = roundByLevel[newLevel] !== undefined ? roundByLevel[newLevel] : 0;
+  entry.due = roundRef + 1 + (GAP[newLevel] || 2);
+  saveState();
+  return { before, after: entry.level };
+}
+
+function buildLevelQueue(level) {
+  const currentRound = roundByLevel[level];
+  const entries = srsPool.filter(w => srsState[w.word].level === level);
+  const shuffled = shuffleArr(entries);
+  const due = shuffled.filter(w => srsState[w.word].due <= currentRound);
+  due.sort((a, b) => (srsState[a.word].due) - (srsState[b.word].due));
+  return due.slice(0, 10); // no padding — show however many are due, per plan
+}
+
+function renderLevelbar(barId) {
+  const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  srsPool.forEach(w => { counts[srsState[w.word].level]++; });
+  document.getElementById(barId).innerHTML = [1,2,3,4,5].map(l => `<div class="lvl">${LEVEL_NAMES[l]}<br>${counts[l]}</div>`).join('');
+}
+
+/* ============ generic per-tab round runner ============ */
+const TABS = {
+  1: { level: 1, cardId: 'card1', barId: 'bar1', progId: 'prog1', sumId: 'sum1' },
+  2: { level: 2, cardId: 'card2', barId: 'bar2', progId: 'prog2', sumId: 'sum2' },
+  3: { level: 3, cardId: 'card3', barId: 'bar3', progId: 'prog3', sumId: 'sum3' },
+  4: { level: 4, cardId: 'card4', barId: 'bar4', progId: 'prog4', sumId: 'sum4' }
+};
+let runtime = { queue: [], stageIndex: 0, results: [], tab: 1 };
+
+function openTab(tabNum) {
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('section-' + i).style.display = i === tabNum ? 'block' : 'none';
+    document.getElementById('tabBtn' + i).classList.toggle('active', i === tabNum);
+  }
+  startTabRound(tabNum);
+}
+
+function startTabRound(tabNum) {
+  const cfg = TABS[tabNum];
+  renderLevelbar(cfg.barId);
+  runtime = { queue: buildLevelQueue(cfg.level), stageIndex: 0, results: [], tab: tabNum };
+  document.getElementById(cfg.sumId).style.display = 'none';
+  document.getElementById(cfg.cardId).style.display = 'block';
+  document.getElementById(cfg.progId).style.width = '0%';
+  renderStep();
+}
+
+function renderStep() {
+  const cfg = TABS[runtime.tab];
+  if (runtime.stageIndex >= runtime.queue.length) { finishTabRound(); return; }
+  document.getElementById(cfg.progId).style.width = (runtime.stageIndex / runtime.queue.length * 100) + '%';
+  const w = runtime.queue[runtime.stageIndex];
+  if (cfg.level === 1) renderFlashStep(w, cfg);
+  else if (cfg.level === 2) renderQuizStep(w, cfg);
+  else if (cfg.level === 3) renderFillStep(cfg);
+  else renderSpellStep(w, cfg);
+}
+
+function afterAnswer(word, passed) {
+  recordResult(word, passed);
+  runtime.results.push({ word, passed });
+  runtime.stageIndex++;
+  renderStep();
+}
+
+/* ---- level 1: flashcard ---- */
+function renderFlashStep(w, cfg) {
+  document.getElementById(cfg.cardId).innerHTML = `
+    <div class="srs-badge">การ์ด (${runtime.stageIndex + 1}/${runtime.queue.length})</div>
+    <div class="flashcard" id="fcEl" onclick="flipFc(event)">
+      <div class="fc-word">${w.word}</div>
+      <div class="fc-pos">(${w.pos})</div>
+      <button class="fc-audio-btn" onclick="event.stopPropagation(); speak('${w.word.replace(/'/g,"\\'")}')">🔊</button>
+      <div class="fc-meaning">${w.meaning}</div>
+      <div class="fc-example">${w.example}</div>
+      <div class="fc-hint">แตะการ์ดเพื่อดูความหมาย</div>
+    </div>
+    <div class="fc-controls">
+      <button class="fc-known" onclick="afterAnswer('${w.word.replace(/'/g,"\\'")}', true)">✅ จำได้แล้ว</button>
+      <button class="fc-unknown" onclick="afterAnswer('${w.word.replace(/'/g,"\\'")}', false)">❌ ยังจำไม่ได้</button>
+    </div>
+  `;
+}
+function flipFc(e) {
+  if (e && e.target && e.target.classList.contains('fc-audio-btn')) return;
+  document.getElementById('fcEl').classList.toggle('flipped');
+}
+
+/* ---- level 2: quiz ---- */
+let currentQuiz = null;
+function renderQuizStep(w, cfg) {
+  const letters = ["A","B","C","D"];
+  currentQuiz = getQuizOptions(w);
+  document.getElementById(cfg.cardId).innerHTML = `
+    <div class="srs-badge">ตัวเลือก (${runtime.stageIndex + 1}/${runtime.queue.length})</div>
+    <div class="srs-word-row">
+      <div class="qword">${w.word}</div><span class="pos-tag">(${w.pos})</span>
+      <button class="srs-audio-btn" onclick="speak('${w.word.replace(/'/g,"\\'")}')">🔊</button>
+    </div>
+    <div class="qhint">เลือกความหมายที่ถูกต้อง</div>
+    <div class="options" id="quizOpts"></div>
+    <div class="feedback" id="quizFb"></div>
+    <button class="nextbtn" id="quizNext">ข้อถัดไป</button>
+  `;
+  const wrap = document.getElementById('quizOpts');
+  currentQuiz.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<div class="opt-main"><span class="letter">${letters[idx]}.</span><span>${opt.text}</span></div>`;
+    btn.onclick = () => quizAnswer(w, idx);
+    wrap.appendChild(btn);
+  });
+}
+function quizAnswer(w, idx) {
+  const { options, answer } = currentQuiz;
+  const wrap = document.getElementById('quizOpts');
+  const buttons = wrap.querySelectorAll('.opt');
+  buttons.forEach(b => b.classList.add('disabled'));
+  buttons[answer].classList.add('correct');
+  const passed = idx === answer;
+  if (!passed) buttons[idx].classList.add('wrong');
+  const fb = document.getElementById('quizFb');
+  fb.style.display = 'block';
+  fb.textContent = passed ? `✅ ถูกต้อง! "${w.word}" = "${options[answer].text}"` : `❌ ไม่ถูก คำตอบคือ "${options[answer].text}"`;
+  document.getElementById('quizNext').classList.add('show');
+  document.getElementById('quizNext').onclick = () => afterAnswer(w.word, passed);
+}
+
+/* ---- level 3: fill (grouped word bank, up to 4 blanks) ---- */
+let fillGroup = [], fillAssignment = [], fillSelected = null, fillChecked = false;
+function renderFillStep(cfg) {
+  fillGroup = [];
+  let i = runtime.stageIndex;
+  while (i < runtime.queue.length && fillGroup.length < 4) { fillGroup.push(runtime.queue[i]); i++; }
+  fillAssignment = new Array(fillGroup.length).fill(null);
+  fillSelected = 0; fillChecked = false;
+  const sentencesHtml = fillGroup.map((w, idx) => {
+    const sentence = getFillSentence(w.word) || `______ (${w.word})`;
+    const parts = sentence.split('_____');
+    return `<div class="fillset-item"><span class="fillset-num">${idx + 1}.</span>${parts[0]}<span class="blank-slot empty" data-idx="${idx}" onclick="onBlankClick(${idx})">เลือกคำ</span>${parts[1] || ''}</div>`;
+  }).join('');
+  const bankWords = shuffleArr(fillGroup.map(w => w.word));
+  const bankHtml = bankWords.map((word, i2) =>
+    `<button class="wordbank-item" id="wb-${i2}" data-word="${word}" onclick="onWordBankClick(${i2}, '${word.replace(/'/g,"\\'")}')">${word}</button>`
+  ).join('');
+  document.getElementById(cfg.cardId).innerHTML = `
+    <div class="srs-badge">เติมคำ (${fillGroup.length} ช่องว่าง)</div>
+    ${sentencesHtml}
+    <div class="wordbank-hint">แตะช่องว่าง แล้วแตะคำจากคลังคำ</div>
+    <div class="wordbank" id="wbWrap">${bankHtml}</div>
+    <div class="feedback" id="fillFb"></div>
+    <button class="primarybtn show" id="fillCheckBtn" onclick="checkFillGroup()">ตรวจคำตอบ</button>
+    <button class="nextbtn" id="fillNextBtn">ชุดถัดไป</button>
+  `;
+  highlightBlank();
+}
+function highlightBlank() {
+  document.querySelectorAll('.blank-slot').forEach(el => el.classList.toggle('selected', Number(el.dataset.idx) === fillSelected));
+}
+function onBlankClick(idx) {
+  if (fillChecked) return;
+  if (fillAssignment[idx]) {
+    const word = fillAssignment[idx];
+    fillAssignment[idx] = null;
+    const el = document.querySelector(`.blank-slot[data-idx="${idx}"]`);
+    el.textContent = 'เลือกคำ'; el.classList.add('empty');
+    const btn = Array.from(document.querySelectorAll('.wordbank-item')).find(b => b.dataset.word === word && b.classList.contains('used'));
+    if (btn) btn.classList.remove('used');
+  }
+  fillSelected = idx;
+  highlightBlank();
+}
+function onWordBankClick(i2, word) {
+  if (fillChecked) return;
+  if (fillSelected === null) { fillSelected = fillAssignment.findIndex(a => a === null); if (fillSelected === -1) return; }
+  fillAssignment[fillSelected] = word;
+  const el = document.querySelector(`.blank-slot[data-idx="${fillSelected}"]`);
+  el.textContent = word; el.classList.remove('empty');
+  document.getElementById(`wb-${i2}`).classList.add('used');
+  const nextEmpty = fillAssignment.findIndex(a => a === null);
+  fillSelected = nextEmpty === -1 ? null : nextEmpty;
+  highlightBlank();
+}
+function checkFillGroup() {
+  if (fillAssignment.some(a => a === null)) {
+    const fb = document.getElementById('fillFb'); fb.style.display = 'block';
+    fb.textContent = '⚠️ กรุณาเติมคำให้ครบทุกช่องก่อนตรวจคำตอบ';
+    return;
+  }
+  fillChecked = true;
+  fillGroup.forEach((w, idx) => {
+    const el = document.querySelector(`.blank-slot[data-idx="${idx}"]`);
+    const passed = fillAssignment[idx].trim().toLowerCase() === w.word.trim().toLowerCase();
+    el.classList.remove('selected');
+    el.classList.add(passed ? 'correct' : 'wrong');
+    if (!passed) el.textContent = `${fillAssignment[idx]} (ที่ถูก: ${w.word})`;
+    recordResult(w.word, passed);
+    runtime.results.push({ word: w.word, passed });
+  });
+  document.querySelectorAll('.blank-slot, .wordbank-item').forEach(el => el.onclick = null);
+  document.getElementById('fillCheckBtn').classList.remove('show');
+  const nextBtn = document.getElementById('fillNextBtn');
+  nextBtn.classList.add('show');
+  nextBtn.onclick = () => { runtime.stageIndex += fillGroup.length; renderStep(); };
+}
+
+/* ---- level 4: spelling ---- */
+function renderSpellStep(w, cfg) {
+  document.getElementById(cfg.cardId).innerHTML = `
+    <div class="srs-badge">สะกดคำ (${runtime.stageIndex + 1}/${runtime.queue.length})</div>
+    <div class="srs-thai">${w.meaning}</div>
+    <div class="qhint">(${w.pos}) — พิมพ์คำศัพท์ภาษาอังกฤษให้ถูกต้อง
+      <button class="srs-audio-btn" onclick="speak('${w.word.replace(/'/g,"\\'")}')">🔊</button>
+    </div>
+    <input type="text" class="fillinput" id="spellInput" placeholder="พิมพ์คำศัพท์..." autocomplete="off" autocapitalize="off">
+    <div class="feedback" id="spellFb"></div>
+    <button class="primarybtn show" id="spellCheckBtn" onclick="checkSpell('${w.word.replace(/'/g,"\\'")}')">ตรวจคำตอบ</button>
+    <button class="nextbtn" id="spellNextBtn">ข้อถัดไป</button>
+  `;
+  const input = document.getElementById('spellInput');
+  input.focus();
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkSpell(w.word); });
+}
+function checkSpell(word) {
+  const input = document.getElementById('spellInput');
+  const passed = input.value.trim().toLowerCase() === word.trim().toLowerCase();
+  input.disabled = true;
+  document.getElementById('spellCheckBtn').classList.remove('show');
+  const fb = document.getElementById('spellFb'); fb.style.display = 'block';
+  fb.textContent = passed ? `✅ ถูกต้อง! "${word}"` : `❌ ไม่ถูก คำที่ถูกคือ "${word}"`;
+  document.getElementById('spellNextBtn').classList.add('show');
+  document.getElementById('spellNextBtn').onclick = () => afterAnswer(word, passed);
+}
+
+/* ---- round summary ---- */
+function finishTabRound() {
+  const cfg = TABS[runtime.tab];
+  roundByLevel[cfg.level]++;
+  saveRounds();
+  renderLevelbar(cfg.barId);
+  document.getElementById(cfg.cardId).style.display = 'none';
+  document.getElementById(cfg.progId).style.width = '100%';
+  const summary = document.getElementById(cfg.sumId);
+  summary.style.display = 'block';
+
+  if (runtime.queue.length === 0) {
+    summary.innerHTML = `
+      <div class="empty-state">
+        ตอนนี้ยังไม่มีคำที่อยู่ระดับ "${LEVEL_NAMES[cfg.level]}" เลย<br>
+        ${cfg.level === 1 ? 'เริ่มฝึกที่นี่ได้เลย รอบหน้าจะมีคำเข้ามาเรื่อยๆ' : 'ต้องผ่านระดับก่อนหน้าให้เลื่อนขึ้นมาก่อน'}
+        <br><button class="retrybtn" onclick="startTabRound(${runtime.tab})">ลองอีกครั้ง</button>
+      </div>`;
+    return;
+  }
+  const passed = runtime.results.filter(r => r.passed).length;
+  summary.innerHTML = `
+    <div>จบรอบนี้แล้ว 🎉</div>
+    <div class="big">${passed}/${runtime.results.length}</div>
+    <p>ตอบถูก ${passed} จาก ${runtime.results.length} คำ</p>
+    <button class="retrybtn" onclick="startTabRound(${runtime.tab})">เริ่มรอบถัดไป</button>
+  `;
+}
+
+/* ============ init ============ */
+loadState();
+startTabRound(1);
+</script>
+</body>
+</html>
