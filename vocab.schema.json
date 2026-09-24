@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vocab Trainer data",
+  "description": "คำศัพท์สำหรับ Vocab Trainer — เพิ่มคำใหม่ได้ด้วยการเพิ่ม object ในอาร์เรย์ words\n\nกติกา: คำที่ไม่มีช่อง phrase เท่ากับคำศัพท์ที่ถูกสุ่มมาให้เรียนจริง (เข้า SRS) ต้องมี example และ fill\nคำที่มี \"phrase\": true คือวลี ใช้เป็นตัวเลือกหลอกอย่างเดียว ไม่ถูกสุ่มมาสอบ",
+  "type": "object",
+  "required": ["version", "words"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "words": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["word", "pos", "meaning"],
+        "additionalProperties": false,
+        "properties": {
+          "word": {
+            "type": "string",
+            "minLength": 1,
+            "description": "คำศัพท์ภาษาอังกฤษ (แสดงเป็นตัวพิมพ์ใหญ่ต้นคำ)"
+          },
+          "pos": {
+            "type": "string",
+            "description": "ชนิดคำ เช่น v. / adj. / n."
+          },
+          "meaning": {
+            "type": "string",
+            "minLength": 1,
+            "description": "ความหมายภาษาไทย"
+          },
+          "example": {
+            "type": "string",
+            "description": "ประโยคตัวอย่าง ใช้ในการ์ดระดับ 1 — ต้องมีสำหรับทุกคำ (ยกเว้น phrase)"
+          },
+          "fill": {
+            "type": "string",
+            "pattern": "_____",
+            "description": "ประโยคสำหรับเติมคำระดับ 3 ต้องมี _____ ตรงตำแหน่งที่จะแทนที่คำ และต้องไม่ให้คำไปติดกับตัวอักษรข้างเคียง"
+          },
+          "group": {
+            "type": "string",
+            "description": "ชื่อกลุ่ม คำที่ group เดียวกันจะถูกใช้หนึ่งเป็นตัวเลือกหลอกของอีกคำหนึ่ง (ควรมี 4-5 คำ)"
+          },
+          "phrase": {
+            "type": "boolean",
+            "description": "true = วลี ใช้เป็นตัวเลือกหลอกอย่างเดียว ไม่ถูกสุ่มมาให้เรียน"
+          }
+        }
+      }
+    }
+  }
+}

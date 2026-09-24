@@ -1,0 +1,1090 @@
+{
+  "$schema": "./vocab.schema.json",
+  "version": 1,
+  "words": [
+    {
+      "word": "Comprise",
+      "pos": "v.",
+      "meaning": "ประกอบด้วย",
+      "example": "The exam is said to comprise three sections: grammar, vocabulary, and reading.",
+      "fill": "The exam is said to _____ three sections: grammar, vocabulary, and reading.",
+      "group": "comprise"
+    },
+    {
+      "word": "Lucrative",
+      "pos": "adj.",
+      "meaning": "ทำกำไรงาม",
+      "example": "She left her job for a more lucrative career in finance.",
+      "fill": "She left her job for a more _____ career in finance.",
+      "group": "comprise"
+    },
+    {
+      "word": "Confiscate",
+      "pos": "v.",
+      "meaning": "ยึดทรัพย์",
+      "example": "Customs officers confiscated the smuggled goods at the border.",
+      "fill": "Customs officers _____ the smuggled goods at the border.",
+      "group": "comprise"
+    },
+    {
+      "word": "Redundant",
+      "pos": "adj.",
+      "meaning": "ซ้ำซ้อน/เกินจำเป็น",
+      "example": "Many workers were made redundant after the factory closed.",
+      "fill": "Many workers were made _____ after the factory closed.",
+      "group": "comprise"
+    },
+    {
+      "word": "Consist of",
+      "pos": "v.",
+      "meaning": "ประกอบด้วย",
+      "phrase": true,
+      "group": "comprise"
+    },
+    {
+      "word": "Contemporary",
+      "pos": "adj.",
+      "meaning": "ร่วมสมัย",
+      "example": "She has a taste for contemporary art rather than classical styles.",
+      "fill": "She has a taste for _____ art rather than classical styles.",
+      "group": "contemporary"
+    },
+    {
+      "word": "Flaw",
+      "pos": "n.",
+      "meaning": "ข้อบกพร่อง",
+      "example": "The engineer found a serious flaw in the design.",
+      "fill": "The engineer found a serious _____ in the design.",
+      "group": "contemporary"
+    },
+    {
+      "word": "Onset",
+      "pos": "n.",
+      "meaning": "การเริ่มต้น",
+      "example": "Doctors noticed the onset of the illness early.",
+      "fill": "Doctors noticed the _____ of the illness early.",
+      "group": "contemporary"
+    },
+    {
+      "word": "Modern",
+      "pos": "adj.",
+      "meaning": "ทันสมัย",
+      "example": "The museum features modern art from the last decade.",
+      "fill": "The museum features _____ art from the last decade.",
+      "group": "contemporary"
+    },
+    {
+      "word": "Succumb",
+      "pos": "v.",
+      "meaning": "ยอมแพ้/พ่ายแพ้ต่อ",
+      "example": "He finally succumbed to the pressure and agreed.",
+      "fill": "He finally _____ to the pressure and agreed.",
+      "group": "contemporary"
+    },
+    {
+      "word": "Scrutinize",
+      "pos": "v.",
+      "meaning": "ตรวจสอบอย่างละเอียด",
+      "example": "Customs officers must scrutinize every document carefully before approval.",
+      "fill": "Customs officers must _____ every document carefully before approval.",
+      "group": "scrutinize"
+    },
+    {
+      "word": "Isolated",
+      "pos": "adj.",
+      "meaning": "โดดเดี่ยว/แยกออกมา",
+      "example": "The village was isolated after the bridge collapsed.",
+      "fill": "The village was _____ after the bridge collapsed.",
+      "group": "scrutinize"
+    },
+    {
+      "word": "Distort",
+      "pos": "v.",
+      "meaning": "บิดเบือน",
+      "example": "The old mirror distorted his reflection.",
+      "fill": "The old mirror _____ his reflection.",
+      "group": "scrutinize"
+    },
+    {
+      "word": "Sequence",
+      "pos": "n.",
+      "meaning": "ลำดับ",
+      "example": "Follow the correct sequence of steps to install the software.",
+      "fill": "Follow the correct _____ of steps to install the software.",
+      "group": "scrutinize"
+    },
+    {
+      "word": "Examine",
+      "pos": "v.",
+      "meaning": "ตรวจสอบ",
+      "example": "The doctor examined the patient carefully.",
+      "fill": "The doctor _____ the patient carefully.",
+      "group": "scrutinize"
+    },
+    {
+      "word": "Dispense",
+      "pos": "v.",
+      "meaning": "แจกจ่าย",
+      "example": "The machine is used to dispense medicine to patients automatically.",
+      "fill": "The machine is used to _____ medicine to patients automatically.",
+      "group": "dispense"
+    },
+    {
+      "word": "Skeptical",
+      "pos": "adj.",
+      "meaning": "ขี้สงสัย/ไม่เชื่อง่ายๆ",
+      "example": "She remained skeptical about his excuse.",
+      "fill": "She remained _____ about his excuse.",
+      "group": "dispense"
+    },
+    {
+      "word": "Distribute",
+      "pos": "v.",
+      "meaning": "แจกจ่าย",
+      "example": "Volunteers distributed food to the flood victims.",
+      "fill": "Volunteers _____ food to the flood victims.",
+      "group": "dispense"
+    },
+    {
+      "word": "Obscure",
+      "pos": "adj.",
+      "meaning": "คลุมเครือ",
+      "example": "The meaning of the poem was obscure to most readers.",
+      "fill": "The meaning of the poem was _____ to most readers.",
+      "group": "dispense"
+    },
+    {
+      "word": "Banish",
+      "pos": "v.",
+      "meaning": "เนรเทศ/ขับไล่",
+      "example": "The king banished the traitor from the kingdom.",
+      "fill": "The king _____ the traitor from the kingdom.",
+      "group": "dispense"
+    },
+    {
+      "word": "Ridicule",
+      "pos": "v.",
+      "meaning": "เยาะเย้ย/ล้อเลียน",
+      "example": "He was afraid his classmates would ridicule his accent.",
+      "fill": "He was afraid his classmates would _____ his accent.",
+      "group": "ridicule"
+    },
+    {
+      "word": "Incidence",
+      "pos": "n.",
+      "meaning": "อัตราการเกิดขึ้น",
+      "example": "The incidence of the disease dropped after the vaccine.",
+      "fill": "The _____ of the disease dropped after the vaccine.",
+      "group": "ridicule"
+    },
+    {
+      "word": "Frugal",
+      "pos": "adj.",
+      "meaning": "ประหยัด",
+      "example": "He lived a frugal life despite his wealth.",
+      "fill": "He lived a _____ life despite his wealth.",
+      "group": "ridicule"
+    },
+    {
+      "word": "Vital",
+      "pos": "adj.",
+      "meaning": "สำคัญยิ่ง",
+      "example": "Clean water is vital for survival.",
+      "fill": "Clean water is _____ for survival.",
+      "group": "ridicule"
+    },
+    {
+      "word": "Mock",
+      "pos": "v.",
+      "meaning": "ล้อเลียน",
+      "example": "The other kids used to mock his accent.",
+      "fill": "The other kids used to _____ his accent.",
+      "group": "ridicule"
+    },
+    {
+      "word": "Venture",
+      "pos": "n./v.",
+      "meaning": "กิจการเสี่ยง/เสี่ยงทำ",
+      "example": "Starting a new business is always a risky venture.",
+      "fill": "Starting a new business is always a risky _____.",
+      "group": "venture"
+    },
+    {
+      "word": "Assail",
+      "pos": "v.",
+      "meaning": "โจมตี",
+      "example": "Critics assailed the new policy immediately.",
+      "fill": "Critics _____ the new policy immediately.",
+      "group": "venture"
+    },
+    {
+      "word": "Fluctuate",
+      "pos": "v.",
+      "meaning": "ผันผวน/ขึ้นๆลงๆ",
+      "example": "Stock prices fluctuate every day.",
+      "fill": "Stock prices _____ every day.",
+      "group": "venture"
+    },
+    {
+      "word": "Risk",
+      "pos": "n./v.",
+      "meaning": "เสี่ยง",
+      "example": "Investing in startups involves a lot of risk.",
+      "fill": "Investing in startups involves a lot of _____.",
+      "group": "venture"
+    },
+    {
+      "word": "Dubious",
+      "pos": "adj.",
+      "meaning": "น่าสงสัย/ไม่แน่ใจ",
+      "example": "The salesman made some dubious claims about the product.",
+      "fill": "The salesman made some _____ claims about the product.",
+      "group": "venture"
+    },
+    {
+      "word": "Arbitrary",
+      "pos": "adj.",
+      "meaning": "ตามอำเภอใจ ไม่มีเหตุผล",
+      "example": "The rule felt completely arbitrary, with no clear reason behind it.",
+      "fill": "The rule felt completely _____, with no clear reason behind it.",
+      "group": "arbitrary"
+    },
+    {
+      "word": "Unreasonable",
+      "pos": "adj.",
+      "meaning": "ไม่มีเหตุผล",
+      "example": "His demands seemed completely unreasonable.",
+      "fill": "His demands seemed completely _____.",
+      "group": "arbitrary"
+    },
+    {
+      "word": "Ceremony",
+      "pos": "n.",
+      "meaning": "พิธีการ",
+      "example": "They held a small ceremony to mark the opening.",
+      "fill": "They held a small _____ to mark the opening.",
+      "group": "arbitrary"
+    },
+    {
+      "word": "Willing",
+      "pos": "adj.",
+      "meaning": "เต็มใจ",
+      "example": "She was willing to help despite the risk.",
+      "fill": "She was _____ to help despite the risk.",
+      "group": "arbitrary"
+    },
+    {
+      "word": "Patriotic",
+      "pos": "adj.",
+      "meaning": "รักชาติ",
+      "example": "He felt patriotic whenever he heard the national anthem.",
+      "fill": "He felt _____ whenever he heard the national anthem.",
+      "group": "arbitrary"
+    },
+    {
+      "word": "Affluent",
+      "pos": "adj.",
+      "meaning": "ร่ำรวย",
+      "example": "They live in an affluent neighborhood full of large houses.",
+      "fill": "They live in an _____ neighborhood full of large houses.",
+      "group": "affluent"
+    },
+    {
+      "word": "Invalid",
+      "pos": "adj.",
+      "meaning": "ไม่ถูกต้อง/ใช้ไม่ได้",
+      "example": "Your ticket is invalid after the expiry date.",
+      "fill": "Your ticket is _____ after the expiry date.",
+      "group": "affluent"
+    },
+    {
+      "word": "Guilty",
+      "pos": "adj.",
+      "meaning": "มีความผิด",
+      "example": "The jury found him guilty of fraud.",
+      "fill": "The jury found him _____ of fraud.",
+      "group": "affluent"
+    },
+    {
+      "word": "Wealthy",
+      "pos": "adj.",
+      "meaning": "ร่ำรวย",
+      "example": "They moved into a wealthy neighborhood.",
+      "fill": "They moved into a _____ neighborhood.",
+      "group": "affluent"
+    },
+    {
+      "word": "Certain",
+      "pos": "adj.",
+      "meaning": "แน่นอน",
+      "example": "She was certain she had locked the door.",
+      "fill": "She was _____ she had locked the door.",
+      "group": "affluent"
+    },
+    {
+      "word": "Eccentric",
+      "pos": "adj.",
+      "meaning": "ประหลาด/พิลึก",
+      "example": "My uncle is a bit eccentric; he collects vintage typewriters.",
+      "fill": "My uncle is a bit _____; he collects vintage typewriters.",
+      "group": "eccentric"
+    },
+    {
+      "word": "Odd",
+      "pos": "adj.",
+      "meaning": "แปลก",
+      "example": "It was odd that he didn't show up.",
+      "fill": "It was _____ that he didn't show up.",
+      "group": "eccentric"
+    },
+    {
+      "word": "Useless",
+      "pos": "adj.",
+      "meaning": "ไร้ประโยชน์",
+      "example": "The broken umbrella was useless in the storm.",
+      "fill": "The broken umbrella was _____ in the storm.",
+      "group": "eccentric"
+    },
+    {
+      "word": "Logical",
+      "pos": "adj.",
+      "meaning": "มีเหตุผล",
+      "example": "His explanation was clear and logical.",
+      "fill": "His explanation was clear and _____.",
+      "group": "eccentric"
+    },
+    {
+      "word": "Forgive",
+      "pos": "v.",
+      "meaning": "ให้อภัย",
+      "example": "She decided to forgive her friend for the mistake.",
+      "fill": "She decided to _____ her friend for the mistake.",
+      "group": "eccentric"
+    },
+    {
+      "word": "Bestow",
+      "pos": "v.",
+      "meaning": "มอบให้/ประทานให้",
+      "example": "The university decided to bestow an honorary degree on the scientist.",
+      "fill": "The university decided to _____ an honorary degree on the scientist.",
+      "group": "bestow"
+    },
+    {
+      "word": "Exploit",
+      "pos": "v.",
+      "meaning": "ฉวยประโยชน์",
+      "example": "The company was accused of exploiting its workers.",
+      "fill": "The company was accused of _____ its workers.",
+      "group": "bestow"
+    },
+    {
+      "word": "Provide",
+      "pos": "v.",
+      "meaning": "จัดหาให้",
+      "example": "The shelter provides food and beds for the homeless.",
+      "fill": "The shelter _____ food and beds for the homeless.",
+      "group": "bestow"
+    },
+    {
+      "word": "Fear",
+      "pos": "n.",
+      "meaning": "ความกลัว",
+      "example": "His fear of heights kept him off the roof.",
+      "fill": "His _____ of heights kept him off the roof.",
+      "group": "bestow"
+    },
+    {
+      "word": "Delicate",
+      "pos": "adj.",
+      "meaning": "บอบบาง/ละเอียดอ่อน",
+      "example": "Handle the antique vase; it's very delicate.",
+      "fill": "Handle the antique vase; it's very _____.",
+      "group": "bestow"
+    },
+    {
+      "word": "Vigorous",
+      "pos": "adj.",
+      "meaning": "มีพลัง/แข็งแรง",
+      "example": "The coach demanded a vigorous effort from every player.",
+      "fill": "The coach demanded a _____ effort from every player.",
+      "group": "vigorous"
+    },
+    {
+      "word": "Energetic",
+      "pos": "adj.",
+      "meaning": "กระตือรือร้น/มีพลัง",
+      "example": "The puppy was energetic and never stopped running.",
+      "fill": "The puppy was _____ and never stopped running.",
+      "group": "vigorous"
+    },
+    {
+      "word": "Preserve",
+      "pos": "v.",
+      "meaning": "อนุรักษ์/ถนอมรักษา",
+      "example": "They worked hard to preserve the old building.",
+      "fill": "They worked hard to _____ the old building.",
+      "group": "vigorous"
+    },
+    {
+      "word": "Enrich",
+      "pos": "v.",
+      "meaning": "ทำให้อุดมสมบูรณ์ขึ้น",
+      "example": "Reading widely can enrich your vocabulary.",
+      "fill": "Reading widely can _____ your vocabulary.",
+      "group": "vigorous"
+    },
+    {
+      "word": "Ample",
+      "pos": "adj.",
+      "meaning": "มากเพียงพอ",
+      "example": "There was ample time to finish the exam before the bell rang.",
+      "fill": "There was _____ time to finish the exam before the bell rang.",
+      "group": "ample"
+    },
+    {
+      "word": "Plentiful",
+      "pos": "adj.",
+      "meaning": "อุดมสมบูรณ์",
+      "example": "Fresh fruit was plentiful at the market.",
+      "fill": "Fresh fruit was _____ at the market.",
+      "group": "ample"
+    },
+    {
+      "word": "Deficient",
+      "pos": "adj.",
+      "meaning": "ขาดแคลน/ไม่เพียงพอ",
+      "example": "His diet was deficient in vitamins.",
+      "fill": "His diet was _____ in vitamins.",
+      "group": "ample"
+    },
+    {
+      "word": "Construct",
+      "pos": "v.",
+      "meaning": "สร้าง/ก่อสร้าง",
+      "example": "Workers began to construct the new bridge.",
+      "fill": "Workers began to _____ the new bridge.",
+      "group": "ample"
+    },
+    {
+      "word": "Valuable",
+      "pos": "adj.",
+      "meaning": "มีค่า",
+      "example": "The painting turned out to be very valuable.",
+      "fill": "The painting turned out to be very _____.",
+      "group": "ample"
+    },
+    {
+      "word": "Obstinate",
+      "pos": "adj.",
+      "meaning": "ดื้อรั้น",
+      "example": "Despite everyone's advice, he remained obstinate and refused to change his plan.",
+      "fill": "Despite everyone's advice, he remained _____ and refused to change his plan.",
+      "group": "obstinate"
+    },
+    {
+      "word": "Recall",
+      "pos": "v.",
+      "meaning": "เรียกคืน/นึกย้อน",
+      "example": "She couldn't recall where she left her keys.",
+      "fill": "She couldn't _____ where she left her keys.",
+      "group": "obstinate"
+    },
+    {
+      "word": "Prevent",
+      "pos": "v.",
+      "meaning": "ป้องกัน",
+      "example": "Regular exercise can prevent many illnesses.",
+      "fill": "Regular exercise can _____ many illnesses.",
+      "group": "obstinate"
+    },
+    {
+      "word": "Harmless",
+      "pos": "adj.",
+      "meaning": "ไม่เป็นอันตราย",
+      "example": "The spider looked scary but was harmless.",
+      "fill": "The spider looked scary but was _____.",
+      "group": "obstinate"
+    },
+    {
+      "word": "Stubborn",
+      "pos": "adj.",
+      "meaning": "ดื้อรั้น",
+      "example": "He was too stubborn to change his mind.",
+      "fill": "He was too _____ to change his mind.",
+      "group": "obstinate"
+    },
+    {
+      "word": "Refrain",
+      "pos": "v.",
+      "meaning": "ละเว้น/หลีกเลี่ยง (refrain from)",
+      "example": "Passengers are asked to refrain from smoking on the train.",
+      "fill": "Passengers are asked to _____ from smoking on the train.",
+      "group": "refrain"
+    },
+    {
+      "word": "Avoid",
+      "pos": "v.",
+      "meaning": "หลีกเลี่ยง",
+      "example": "Try to avoid heavy traffic during rush hour.",
+      "fill": "Try to _____ heavy traffic during rush hour.",
+      "group": "refrain"
+    },
+    {
+      "word": "Inborn",
+      "pos": "adj.",
+      "meaning": "ติดตัวมาแต่กำเนิด",
+      "example": "Her talent for music seemed inborn.",
+      "fill": "Her talent for music seemed _____.",
+      "group": "refrain"
+    },
+    {
+      "word": "Encourage",
+      "pos": "v.",
+      "meaning": "ให้กำลังใจ/สนับสนุน",
+      "example": "Teachers should encourage students to ask questions.",
+      "fill": "Teachers should _____ students to ask questions.",
+      "group": "refrain"
+    },
+    {
+      "word": "Jealous",
+      "pos": "adj.",
+      "meaning": "อิจฉา",
+      "example": "He felt jealous when his friend got the promotion.",
+      "fill": "He felt _____ when his friend got the promotion.",
+      "group": "refrain"
+    },
+    {
+      "word": "Vocation",
+      "pos": "n.",
+      "meaning": "อาชีพที่รู้สึกเป็น calling",
+      "example": "Teaching was more than a job to her; it was her true vocation.",
+      "fill": "Teaching was more than a job to her; it was her true _____.",
+      "group": "vocation"
+    },
+    {
+      "word": "Profession",
+      "pos": "n.",
+      "meaning": "อาชีพ",
+      "example": "Medicine is a demanding profession.",
+      "fill": "Medicine is a demanding _____.",
+      "group": "vocation"
+    },
+    {
+      "word": "Intellectual",
+      "pos": "adj./n.",
+      "meaning": "ทางปัญญา/นักวิชาการ",
+      "example": "The debate attracted many intellectuals.",
+      "fill": "The debate attracted many _____.",
+      "group": "vocation"
+    },
+    {
+      "word": "Flexible",
+      "pos": "adj.",
+      "meaning": "ยืดหยุ่น",
+      "example": "Our schedule is flexible, so we can meet anytime.",
+      "fill": "Our schedule is _____, so we can meet anytime.",
+      "group": "vocation"
+    },
+    {
+      "word": "Vision",
+      "pos": "n.",
+      "meaning": "วิสัยทัศน์",
+      "example": "The CEO shared her vision for the company's future.",
+      "fill": "The CEO shared her _____ for the company's future.",
+      "group": "vocation"
+    },
+    {
+      "word": "Tedious",
+      "pos": "adj.",
+      "meaning": "น่าเบื่อ (แบบยืดเยื้อ)",
+      "example": "Filling out the same form over and over was extremely tedious.",
+      "fill": "Filling out the same form over and over was extremely _____.",
+      "group": "tedious"
+    },
+    {
+      "word": "Boring",
+      "pos": "adj.",
+      "meaning": "น่าเบื่อ",
+      "example": "The lecture was so boring that students fell asleep.",
+      "fill": "The lecture was so _____ that students fell asleep.",
+      "group": "tedious"
+    },
+    {
+      "word": "Expensive",
+      "pos": "adj.",
+      "meaning": "แพง",
+      "example": "That restaurant is too expensive for a casual dinner.",
+      "fill": "That restaurant is too _____ for a casual dinner.",
+      "group": "tedious"
+    },
+    {
+      "word": "Proud",
+      "pos": "adj.",
+      "meaning": "ภูมิใจ",
+      "example": "Her parents were proud of her achievement.",
+      "fill": "Her parents were _____ of her achievement.",
+      "group": "tedious"
+    },
+    {
+      "word": "Unbearable",
+      "pos": "adj.",
+      "meaning": "ทนไม่ไหว",
+      "example": "The heat in the room was unbearable.",
+      "fill": "The heat in the room was _____.",
+      "group": "tedious"
+    },
+    {
+      "word": "Coerce",
+      "pos": "v.",
+      "meaning": "บังคับ/ข่มขู่ให้ทำ",
+      "example": "No one can coerce you into signing a contract against your will.",
+      "fill": "No one can _____ you into signing a contract against your will.",
+      "group": "coerce"
+    },
+    {
+      "word": "Absurd",
+      "pos": "adj.",
+      "meaning": "ไร้สาระ/ไม่สมเหตุสมผล",
+      "example": "The idea of walking to the moon sounds absurd.",
+      "fill": "The idea of walking to the moon sounds _____.",
+      "group": "coerce"
+    },
+    {
+      "word": "Force",
+      "pos": "v.",
+      "meaning": "บังคับ",
+      "example": "No one can force you to sign the contract.",
+      "fill": "No one can _____ you to sign the contract.",
+      "group": "coerce"
+    },
+    {
+      "word": "Peculiar",
+      "pos": "adj.",
+      "meaning": "แปลกประหลาด",
+      "example": "There was a peculiar smell coming from the kitchen.",
+      "fill": "There was a _____ smell coming from the kitchen.",
+      "group": "coerce"
+    },
+    {
+      "word": "Fate",
+      "pos": "n.",
+      "meaning": "โชคชะตา",
+      "example": "He believed it was fate that brought them together.",
+      "fill": "He believed it was _____ that brought them together.",
+      "group": "coerce"
+    },
+    {
+      "word": "Explicit",
+      "pos": "adj.",
+      "meaning": "ชัดเจน ตรงไปตรงมา",
+      "example": "The instructions were explicit, leaving no room for misunderstanding.",
+      "fill": "The instructions were _____, leaving no room for misunderstanding.",
+      "group": "explicit"
+    },
+    {
+      "word": "Clear and direct",
+      "pos": "adj. phrase",
+      "meaning": "ชัดเจน ตรงไปตรงมา",
+      "phrase": true,
+      "group": "explicit"
+    },
+    {
+      "word": "Hidden",
+      "pos": "adj.",
+      "meaning": "ซ่อนอยู่",
+      "example": "There was a hidden message in the letter.",
+      "fill": "There was a _____ message in the letter.",
+      "group": "explicit"
+    },
+    {
+      "word": "Random",
+      "pos": "adj.",
+      "meaning": "สุ่ม",
+      "example": "The winner was chosen at random.",
+      "fill": "The winner was chosen at _____.",
+      "group": "explicit"
+    },
+    {
+      "word": "Weak",
+      "pos": "adj.",
+      "meaning": "อ่อนแอ",
+      "example": "After the illness, he felt weak for weeks.",
+      "fill": "After the illness, he felt _____ for weeks.",
+      "group": "explicit"
+    },
+    {
+      "word": "Ambiguous",
+      "pos": "adj.",
+      "meaning": "กำกวม ตีความได้หลายแบบ",
+      "example": "His answer was so ambiguous that no one knew if he agreed or not.",
+      "fill": "His answer was so _____ that no one knew if he agreed or not.",
+      "group": "ambiguous"
+    },
+    {
+      "word": "Definite",
+      "pos": "adj.",
+      "meaning": "ชัดเจนแน่นอน",
+      "example": "We need a definite answer by tomorrow.",
+      "fill": "We need a _____ answer by tomorrow.",
+      "group": "ambiguous"
+    },
+    {
+      "word": "Open to more than one meaning",
+      "pos": "adj. phrase",
+      "meaning": "ตีความได้หลายแบบ",
+      "phrase": true,
+      "group": "ambiguous"
+    },
+    {
+      "word": "Cheap",
+      "pos": "adj.",
+      "meaning": "ราคาถูก",
+      "example": "The tickets were surprisingly cheap this season.",
+      "fill": "The tickets were surprisingly _____ this season.",
+      "group": "ambiguous"
+    },
+    {
+      "word": "Vague",
+      "pos": "adj.",
+      "meaning": "คลุมเครือ ไม่ชัดเจน",
+      "example": "The directions she gave were too vague to follow.",
+      "fill": "The directions she gave were too _____ to follow.",
+      "group": "vague"
+    },
+    {
+      "word": "Precise",
+      "pos": "adj.",
+      "meaning": "แม่นยำ",
+      "example": "The surgeon's movements were precise and careful.",
+      "fill": "The surgeon's movements were _____ and careful.",
+      "group": "vague"
+    },
+    {
+      "word": "Loud",
+      "pos": "adj.",
+      "meaning": "เสียงดัง",
+      "example": "The music was too loud to hear each other talk.",
+      "fill": "The music was too _____ to hear each other talk.",
+      "group": "vague"
+    },
+    {
+      "word": "Unclear",
+      "pos": "adj.",
+      "meaning": "ไม่ชัดเจน",
+      "example": "His instructions were unclear, so we got lost.",
+      "fill": "His instructions were _____, so we got lost.",
+      "group": "vague"
+    },
+    {
+      "word": "Fast",
+      "pos": "adj.",
+      "meaning": "เร็ว",
+      "example": "The new train is much faster than the old one.",
+      "fill": "The new train is much _____ than the old one.",
+      "group": "vague"
+    },
+    {
+      "word": "Curtail",
+      "pos": "v.",
+      "meaning": "ลด/จำกัด",
+      "example": "The government decided to curtail public spending this year.",
+      "fill": "The government decided to _____ public spending this year.",
+      "group": "curtail"
+    },
+    {
+      "word": "Expand",
+      "pos": "v.",
+      "meaning": "ขยาย",
+      "example": "The company plans to expand into new markets.",
+      "fill": "The company plans to _____ into new markets.",
+      "group": "curtail"
+    },
+    {
+      "word": "Reduce / limit",
+      "pos": "v. phrase",
+      "meaning": "ลด/จำกัด",
+      "phrase": true,
+      "group": "curtail"
+    },
+    {
+      "word": "Repeat",
+      "pos": "v.",
+      "meaning": "ทำซ้ำ",
+      "example": "Could you repeat the question, please?",
+      "fill": "Could you _____ the question, please?",
+      "group": "curtail"
+    },
+    {
+      "word": "Celebrate",
+      "pos": "v.",
+      "meaning": "ฉลอง",
+      "example": "They celebrated the victory with a big party.",
+      "fill": "They _____ the victory with a big party.",
+      "group": "curtail"
+    },
+    {
+      "word": "Outraged",
+      "pos": "adj.",
+      "meaning": "โกรธมาก",
+      "example": "Residents were outraged when they heard about the new tax.",
+      "fill": "Residents were _____ when they heard about the new tax.",
+      "group": "outraged"
+    },
+    {
+      "word": "Delighted",
+      "pos": "adj.",
+      "meaning": "ดีใจมาก",
+      "example": "She was delighted to receive the award.",
+      "fill": "She was _____ to receive the award.",
+      "group": "outraged"
+    },
+    {
+      "word": "Very angry",
+      "pos": "adj. phrase",
+      "meaning": "โกรธมาก",
+      "phrase": true,
+      "group": "outraged"
+    },
+    {
+      "word": "Confused",
+      "pos": "adj.",
+      "meaning": "สับสน",
+      "example": "I felt confused by the complicated instructions.",
+      "fill": "I felt _____ by the complicated instructions.",
+      "group": "outraged"
+    },
+    {
+      "word": "Relaxed",
+      "pos": "adj.",
+      "meaning": "ผ่อนคลาย",
+      "example": "He looked relaxed after his vacation.",
+      "fill": "He looked _____ after his vacation.",
+      "group": "outraged"
+    },
+    {
+      "word": "Shunned",
+      "pos": "v. (past participle)",
+      "meaning": "ถูกหลีกเลี่ยง/ปฏิเสธ",
+      "example": "After the scandal, he was shunned by his former colleagues.",
+      "fill": "After the scandal, he was _____ by his former colleagues.",
+      "group": "shunned"
+    },
+    {
+      "word": "Widely avoided",
+      "pos": "v. phrase",
+      "meaning": "ถูกหลีกเลี่ยงอย่างกว้างขวาง",
+      "phrase": true,
+      "group": "shunned"
+    },
+    {
+      "word": "Warmly welcomed",
+      "pos": "v. phrase",
+      "meaning": "ได้รับการต้อนรับอย่างอบอุ่น",
+      "phrase": true,
+      "group": "shunned"
+    },
+    {
+      "word": "Carefully studied",
+      "pos": "v. phrase",
+      "meaning": "ถูกศึกษาอย่างละเอียด",
+      "phrase": true,
+      "group": "shunned"
+    },
+    {
+      "word": "Loudly praised",
+      "pos": "v. phrase",
+      "meaning": "ถูกยกย่องอย่างมาก",
+      "phrase": true,
+      "group": "shunned"
+    },
+    {
+      "word": "Utterly",
+      "pos": "adv.",
+      "meaning": "อย่างสิ้นเชิง",
+      "example": "The plan was utterly impossible to carry out in one day.",
+      "fill": "The plan was _____ impossible to carry out in one day.",
+      "group": "utterly"
+    },
+    {
+      "word": "Partially",
+      "pos": "adv.",
+      "meaning": "บางส่วน",
+      "example": "The project was only partially completed.",
+      "fill": "The project was only _____ completed.",
+      "group": "utterly"
+    },
+    {
+      "word": "Rarely",
+      "pos": "adv.",
+      "meaning": "แทบไม่",
+      "example": "He rarely eats fast food.",
+      "fill": "He _____ eats fast food.",
+      "group": "utterly"
+    },
+    {
+      "word": "Completely",
+      "pos": "adv.",
+      "meaning": "อย่างสมบูรณ์",
+      "example": "The building was completely destroyed by the fire.",
+      "fill": "The building was _____ destroyed by the fire.",
+      "group": "utterly"
+    },
+    {
+      "word": "Occasionally",
+      "pos": "adv.",
+      "meaning": "เป็นครั้งคราว",
+      "example": "We occasionally meet for coffee on weekends.",
+      "fill": "We _____ meet for coffee on weekends.",
+      "group": "utterly"
+    },
+    {
+      "word": "Considerable",
+      "pos": "adj.",
+      "meaning": "ค่อนข้างมาก/พอสมควร",
+      "example": "The company spent a considerable amount of money on advertising.",
+      "fill": "The company spent a _____ amount of money on advertising.",
+      "group": "considerable"
+    },
+    {
+      "word": "Fairly large in amount",
+      "pos": "adj. phrase",
+      "meaning": "ค่อนข้างมาก",
+      "phrase": true,
+      "group": "considerable"
+    },
+    {
+      "word": "Very small",
+      "pos": "adj.",
+      "meaning": "เล็กมาก",
+      "phrase": true,
+      "group": "considerable"
+    },
+    {
+      "word": "Uncertain",
+      "pos": "adj.",
+      "meaning": "ไม่แน่นอน",
+      "example": "The future of the project remains uncertain.",
+      "fill": "The future of the project remains _____.",
+      "group": "considerable"
+    },
+    {
+      "word": "Illegal",
+      "pos": "adj.",
+      "meaning": "ผิดกฎหมาย",
+      "example": "Parking here is illegal.",
+      "fill": "Parking here is _____.",
+      "group": "considerable"
+    },
+    {
+      "word": "Impose",
+      "pos": "v.",
+      "meaning": "บังคับใช้/กำหนด",
+      "example": "The government plans to impose a new tax on imported goods.",
+      "fill": "The government plans to _____ a new tax on imported goods.",
+      "group": "impose"
+    },
+    {
+      "word": "To remove",
+      "pos": "v.",
+      "meaning": "เอาออก",
+      "phrase": true,
+      "group": "impose"
+    },
+    {
+      "word": "To force something to be accepted",
+      "pos": "v. phrase",
+      "meaning": "บังคับให้ยอมรับ",
+      "phrase": true,
+      "group": "impose"
+    },
+    {
+      "word": "To ignore",
+      "pos": "v.",
+      "meaning": "เพิกเฉย",
+      "phrase": true,
+      "group": "impose"
+    },
+    {
+      "word": "To forgive",
+      "pos": "v.",
+      "meaning": "ให้อภัย",
+      "phrase": true,
+      "group": "impose"
+    },
+    {
+      "word": "Revenue",
+      "pos": "n.",
+      "meaning": "รายได้ (โดยเฉพาะของรัฐ)",
+      "example": "The company's revenue increased by twenty percent last year.",
+      "fill": "The company's _____ increased by twenty percent last year.",
+      "group": "revenue"
+    },
+    {
+      "word": "Income, especially of a government",
+      "pos": "n. phrase",
+      "meaning": "รายได้ โดยเฉพาะของรัฐ",
+      "phrase": true,
+      "group": "revenue"
+    },
+    {
+      "word": "Expense",
+      "pos": "n.",
+      "meaning": "รายจ่าย",
+      "example": "Travel expense will be reimbursed by the company.",
+      "fill": "Travel _____ will be reimbursed by the company.",
+      "group": "revenue"
+    },
+    {
+      "word": "Debt",
+      "pos": "n.",
+      "meaning": "หนี้สิน",
+      "example": "They struggled to pay off their debt.",
+      "fill": "They struggled to pay off their _____.",
+      "group": "revenue"
+    },
+    {
+      "word": "Loss",
+      "pos": "n.",
+      "meaning": "ขาดทุน",
+      "example": "The company reported a huge loss last year.",
+      "fill": "The company reported a huge _____ last year.",
+      "group": "revenue"
+    },
+    {
+      "word": "Milestone",
+      "pos": "n.",
+      "meaning": "จุดเปลี่ยนสำคัญ",
+      "example": "Passing the exam was an important milestone in her career.",
+      "fill": "Passing the exam was an important _____ in her career.",
+      "group": "milestone"
+    },
+    {
+      "word": "An important stage or event",
+      "pos": "n. phrase",
+      "meaning": "ขั้นตอน/เหตุการณ์สำคัญ",
+      "phrase": true,
+      "group": "milestone"
+    },
+    {
+      "word": "A small mistake",
+      "pos": "n.",
+      "meaning": "ความผิดพลาดเล็กน้อย",
+      "phrase": true,
+      "group": "milestone"
+    },
+    {
+      "word": "A type of tax",
+      "pos": "n.",
+      "meaning": "ภาษีชนิดหนึ่ง",
+      "phrase": true,
+      "group": "milestone"
+    },
+    {
+      "word": "A legal document",
+      "pos": "n.",
+      "meaning": "เอกสารทางกฎหมาย",
+      "phrase": true,
+      "group": "milestone"
+    }
+  ]
+}

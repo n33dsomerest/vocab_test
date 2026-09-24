@@ -34,6 +34,12 @@
   h1 { font-size: 1.2rem; margin: 6px 0 2px; text-align: center; }
   .sub { text-align: center; color: var(--subtext); font-size: 0.8rem; margin-bottom: 14px; }
 
+  /* boot / load state */
+  .boot { text-align: center; padding: 34px 14px; color: var(--subtext); font-size: 0.9rem; line-height: 1.75; }
+  .boot-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .boot-err { color: var(--wrong); font-weight: 700; margin-bottom: 10px; }
+  .boot code { background: var(--accent-soft); color: var(--accent); padding: 2px 6px; border-radius: 5px; font-size: 0.85em; }
+
   .tabbar { display: flex; gap: 5px; margin-bottom: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 5px; }
   .tabbtn { flex: 1; padding: 9px 2px; border: none; border-radius: 10px; background: transparent; color: var(--subtext); font-size: 0.74rem; font-weight: 600; cursor: pointer; }
   .tabbtn.active { background: var(--accent); color: var(--btn-text); }
@@ -120,6 +126,12 @@
   <h1>🧠 Vocab Trainer</h1>
   <div class="sub">ฝึกคำศัพท์เตรียมสอบศุลกากร</div>
 
+  <div id="boot" class="boot">
+    <div class="boot-title">กำลังโหลดคำศัพท์…</div>
+    <div id="bootMsg"></div>
+  </div>
+
+  <div id="app" style="display:none">
   <div class="tabbar">
     <button class="tabbtn active" id="tabBtn1" onclick="openTab(1)">📇 การ์ด</button>
     <button class="tabbtn" id="tabBtn2" onclick="openTab(2)">✅ ตัวเลือก</button>
@@ -151,206 +163,66 @@
     <div class="card" id="card4"></div>
     <div class="card scorewrap" id="sum4" style="display:none;"></div>
   </div>
+  </div>
 </div>
 
 <script>
-/* ============ DATA: 28 headwords with curated options ============ */
-const questions = [
-  { word: "Comprise", pos: "v.", meaning: "ประกอบด้วย",
-    options: [{ text: "Lucrative", pos: "adj.", meaning: "ทำกำไรงาม" },{ text: "Confiscate", pos: "v.", meaning: "ยึดทรัพย์" },{ text: "Redundant", pos: "adj.", meaning: "ซ้ำซ้อน/เกินจำเป็น" },{ text: "Consist of", pos: "v.", meaning: "ประกอบด้วย" }], answer: 3 },
-  { word: "Contemporary", pos: "adj.", meaning: "ร่วมสมัย",
-    options: [{ text: "Flaw", pos: "n.", meaning: "ข้อบกพร่อง" },{ text: "Onset", pos: "n.", meaning: "การเริ่มต้น" },{ text: "Modern", pos: "adj.", meaning: "ทันสมัย" },{ text: "Succumb", pos: "v.", meaning: "ยอมแพ้/พ่ายแพ้ต่อ" }], answer: 2 },
-  { word: "Scrutinize", pos: "v.", meaning: "ตรวจสอบอย่างละเอียด",
-    options: [{ text: "Isolated", pos: "adj.", meaning: "โดดเดี่ยว/แยกออกมา" },{ text: "Distort", pos: "v.", meaning: "บิดเบือน" },{ text: "Sequence", pos: "n.", meaning: "ลำดับ" },{ text: "Examine", pos: "v.", meaning: "ตรวจสอบ" }], answer: 3 },
-  { word: "Dispense", pos: "v.", meaning: "แจกจ่าย",
-    options: [{ text: "Skeptical", pos: "adj.", meaning: "ขี้สงสัย/ไม่เชื่อง่ายๆ" },{ text: "Distribute", pos: "v.", meaning: "แจกจ่าย" },{ text: "Obscure", pos: "adj.", meaning: "คลุมเครือ" },{ text: "Banish", pos: "v.", meaning: "เนรเทศ/ขับไล่" }], answer: 1 },
-  { word: "Ridicule", pos: "v.", meaning: "เยาะเย้ย/ล้อเลียน",
-    options: [{ text: "Incidence", pos: "n.", meaning: "อัตราการเกิดขึ้น" },{ text: "Frugal", pos: "adj.", meaning: "ประหยัด" },{ text: "Vital", pos: "adj.", meaning: "สำคัญยิ่ง" },{ text: "Mock", pos: "v.", meaning: "ล้อเลียน" }], answer: 3 },
-  { word: "Venture", pos: "n./v.", meaning: "กิจการเสี่ยง/เสี่ยงทำ",
-    options: [{ text: "Assail", pos: "v.", meaning: "โจมตี" },{ text: "Fluctuate", pos: "v.", meaning: "ผันผวน/ขึ้นๆลงๆ" },{ text: "Risk", pos: "n./v.", meaning: "เสี่ยง" },{ text: "Dubious", pos: "adj.", meaning: "น่าสงสัย/ไม่แน่ใจ" }], answer: 2 },
-  { word: "Arbitrary", pos: "adj.", meaning: "ตามอำเภอใจ ไม่มีเหตุผล",
-    options: [{ text: "Unreasonable", pos: "adj.", meaning: "ไม่มีเหตุผล" },{ text: "Ceremony", pos: "n.", meaning: "พิธีการ" },{ text: "Willing", pos: "adj.", meaning: "เต็มใจ" },{ text: "Patriotic", pos: "adj.", meaning: "รักชาติ" }], answer: 0 },
-  { word: "Affluent", pos: "adj.", meaning: "ร่ำรวย",
-    options: [{ text: "Invalid", pos: "adj.", meaning: "ไม่ถูกต้อง/ใช้ไม่ได้" },{ text: "Guilty", pos: "adj.", meaning: "มีความผิด" },{ text: "Wealthy", pos: "adj.", meaning: "ร่ำรวย" },{ text: "Certain", pos: "adj.", meaning: "แน่นอน" }], answer: 2 },
-  { word: "Eccentric", pos: "adj.", meaning: "ประหลาด/พิลึก",
-    options: [{ text: "Odd", pos: "adj.", meaning: "แปลก" },{ text: "Useless", pos: "adj.", meaning: "ไร้ประโยชน์" },{ text: "Logical", pos: "adj.", meaning: "มีเหตุผล" },{ text: "Forgive", pos: "v.", meaning: "ให้อภัย" }], answer: 0 },
-  { word: "Bestow", pos: "v.", meaning: "มอบให้/ประทานให้",
-    options: [{ text: "Exploit", pos: "v.", meaning: "ฉวยประโยชน์" },{ text: "Provide", pos: "v.", meaning: "จัดหาให้" },{ text: "Fear", pos: "n.", meaning: "ความกลัว" },{ text: "Delicate", pos: "adj.", meaning: "บอบบาง/ละเอียดอ่อน" }], answer: 1 },
-  { word: "Vigorous", pos: "adj.", meaning: "มีพลัง/แข็งแรง",
-    options: [{ text: "Energetic", pos: "adj.", meaning: "กระตือรือร้น/มีพลัง" },{ text: "Preserve", pos: "v.", meaning: "อนุรักษ์/ถนอมรักษา" },{ text: "Enrich", pos: "v.", meaning: "ทำให้อุดมสมบูรณ์ขึ้น" },{ text: "Exploit", pos: "v.", meaning: "ฉวยประโยชน์" }], answer: 0 },
-  { word: "Ample", pos: "adj.", meaning: "มากเพียงพอ",
-    options: [{ text: "Plentiful", pos: "adj.", meaning: "อุดมสมบูรณ์" },{ text: "Deficient", pos: "adj.", meaning: "ขาดแคลน/ไม่เพียงพอ" },{ text: "Construct", pos: "v.", meaning: "สร้าง/ก่อสร้าง" },{ text: "Valuable", pos: "adj.", meaning: "มีค่า" }], answer: 0 },
-  { word: "Obstinate", pos: "adj.", meaning: "ดื้อรั้น",
-    options: [{ text: "Recall", pos: "v.", meaning: "เรียกคืน/นึกย้อน" },{ text: "Prevent", pos: "v.", meaning: "ป้องกัน" },{ text: "Harmless", pos: "adj.", meaning: "ไม่เป็นอันตราย" },{ text: "Stubborn", pos: "adj.", meaning: "ดื้อรั้น" }], answer: 3 },
-  { word: "Refrain", pos: "v.", meaning: "ละเว้น/หลีกเลี่ยง (refrain from)",
-    options: [{ text: "Avoid", pos: "v.", meaning: "หลีกเลี่ยง" },{ text: "Inborn", pos: "adj.", meaning: "ติดตัวมาแต่กำเนิด" },{ text: "Encourage", pos: "v.", meaning: "ให้กำลังใจ/สนับสนุน" },{ text: "Jealous", pos: "adj.", meaning: "อิจฉา" }], answer: 0 },
-  { word: "Vocation", pos: "n.", meaning: "อาชีพที่รู้สึกเป็น calling",
-    options: [{ text: "Profession", pos: "n.", meaning: "อาชีพ" },{ text: "Intellectual", pos: "adj./n.", meaning: "ทางปัญญา/นักวิชาการ" },{ text: "Flexible", pos: "adj.", meaning: "ยืดหยุ่น" },{ text: "Vision", pos: "n.", meaning: "วิสัยทัศน์" }], answer: 0 },
-  { word: "Tedious", pos: "adj.", meaning: "น่าเบื่อ (แบบยืดเยื้อ)",
-    options: [{ text: "Boring", pos: "adj.", meaning: "น่าเบื่อ" },{ text: "Expensive", pos: "adj.", meaning: "แพง" },{ text: "Proud", pos: "adj.", meaning: "ภูมิใจ" },{ text: "Unbearable", pos: "adj.", meaning: "ทนไม่ไหว" }], answer: 0 },
-  { word: "Coerce", pos: "v.", meaning: "บังคับ/ข่มขู่ให้ทำ",
-    options: [{ text: "Absurd", pos: "adj.", meaning: "ไร้สาระ/ไม่สมเหตุสมผล" },{ text: "Force", pos: "v.", meaning: "บังคับ" },{ text: "Peculiar", pos: "adj.", meaning: "แปลกประหลาด" },{ text: "Fate", pos: "n.", meaning: "โชคชะตา" }], answer: 1 },
-  { word: "Explicit", pos: "adj.", meaning: "ชัดเจน ตรงไปตรงมา",
-    options: [{ text: "Clear and direct", pos: "adj. phrase", meaning: "ชัดเจน ตรงไปตรงมา" },{ text: "Hidden", pos: "adj.", meaning: "ซ่อนอยู่" },{ text: "Random", pos: "adj.", meaning: "สุ่ม" },{ text: "Weak", pos: "adj.", meaning: "อ่อนแอ" }], answer: 0 },
-  { word: "Ambiguous", pos: "adj.", meaning: "กำกวม ตีความได้หลายแบบ",
-    options: [{ text: "Definite", pos: "adj.", meaning: "ชัดเจนแน่นอน" },{ text: "Open to more than one meaning", pos: "adj. phrase", meaning: "ตีความได้หลายแบบ" },{ text: "Boring", pos: "adj.", meaning: "น่าเบื่อ" },{ text: "Cheap", pos: "adj.", meaning: "ราคาถูก" }], answer: 1 },
-  { word: "Vague", pos: "adj.", meaning: "คลุมเครือ ไม่ชัดเจน",
-    options: [{ text: "Precise", pos: "adj.", meaning: "แม่นยำ" },{ text: "Loud", pos: "adj.", meaning: "เสียงดัง" },{ text: "Unclear", pos: "adj.", meaning: "ไม่ชัดเจน" },{ text: "Fast", pos: "adj.", meaning: "เร็ว" }], answer: 2 },
-  { word: "Curtail", pos: "v.", meaning: "ลด/จำกัด",
-    options: [{ text: "Expand", pos: "v.", meaning: "ขยาย" },{ text: "Reduce / limit", pos: "v. phrase", meaning: "ลด/จำกัด" },{ text: "Repeat", pos: "v.", meaning: "ทำซ้ำ" },{ text: "Celebrate", pos: "v.", meaning: "ฉลอง" }], answer: 1 },
-  { word: "Outraged", pos: "adj.", meaning: "โกรธมาก",
-    options: [{ text: "Delighted", pos: "adj.", meaning: "ดีใจมาก" },{ text: "Very angry", pos: "adj. phrase", meaning: "โกรธมาก" },{ text: "Confused", pos: "adj.", meaning: "สับสน" },{ text: "Relaxed", pos: "adj.", meaning: "ผ่อนคลาย" }], answer: 1 },
-  { word: "Shunned", pos: "v. (past participle)", meaning: "ถูกหลีกเลี่ยง/ปฏิเสธ",
-    options: [{ text: "Widely avoided", pos: "v. phrase", meaning: "ถูกหลีกเลี่ยงอย่างกว้างขวาง" },{ text: "Warmly welcomed", pos: "v. phrase", meaning: "ได้รับการต้อนรับอย่างอบอุ่น" },{ text: "Carefully studied", pos: "v. phrase", meaning: "ถูกศึกษาอย่างละเอียด" },{ text: "Loudly praised", pos: "v. phrase", meaning: "ถูกยกย่องอย่างมาก" }], answer: 0 },
-  { word: "Utterly", pos: "adv.", meaning: "อย่างสิ้นเชิง",
-    options: [{ text: "Partially", pos: "adv.", meaning: "บางส่วน" },{ text: "Rarely", pos: "adv.", meaning: "แทบไม่" },{ text: "Completely", pos: "adv.", meaning: "อย่างสมบูรณ์" },{ text: "Occasionally", pos: "adv.", meaning: "เป็นครั้งคราว" }], answer: 2 },
-  { word: "Considerable", pos: "adj.", meaning: "ค่อนข้างมาก/พอสมควร",
-    options: [{ text: "Fairly large in amount", pos: "adj. phrase", meaning: "ค่อนข้างมาก" },{ text: "Very small", pos: "adj.", meaning: "เล็กมาก" },{ text: "Uncertain", pos: "adj.", meaning: "ไม่แน่นอน" },{ text: "Illegal", pos: "adj.", meaning: "ผิดกฎหมาย" }], answer: 0 },
-  { word: "Impose", pos: "v.", meaning: "บังคับใช้/กำหนด",
-    options: [{ text: "To remove", pos: "v.", meaning: "เอาออก" },{ text: "To force something to be accepted", pos: "v. phrase", meaning: "บังคับให้ยอมรับ" },{ text: "To ignore", pos: "v.", meaning: "เพิกเฉย" },{ text: "To forgive", pos: "v.", meaning: "ให้อภัย" }], answer: 1 },
-  { word: "Revenue", pos: "n.", meaning: "รายได้ (โดยเฉพาะของรัฐ)",
-    options: [{ text: "Income, especially of a government", pos: "n. phrase", meaning: "รายได้ โดยเฉพาะของรัฐ" },{ text: "Expense", pos: "n.", meaning: "รายจ่าย" },{ text: "Debt", pos: "n.", meaning: "หนี้สิน" },{ text: "Loss", pos: "n.", meaning: "ขาดทุน" }], answer: 0 },
-  { word: "Milestone", pos: "n.", meaning: "จุดเปลี่ยนสำคัญ",
-    options: [{ text: "An important stage or event", pos: "n. phrase", meaning: "ขั้นตอน/เหตุการณ์สำคัญ" },{ text: "A small mistake", pos: "n.", meaning: "ความผิดพลาดเล็กน้อย" },{ text: "A type of tax", pos: "n.", meaning: "ภาษีชนิดหนึ่ง" },{ text: "A legal document", pos: "n.", meaning: "เอกสารทางกฎหมาย" }], answer: 0 }
-];
+/* ============ DATA LOADER: reads vocab.json ============ */
+/* คำศัพท์ทั้งหมดอยู่ใน vocab.json — เพิ่มคำใหม่โดยแก้ไฟล์นั้นไฟล์เดียว
+   ฟิลด์ของแต่ละคำ:
+     word, pos, meaning   — จำเป็นทุกคำ
+     example, fill        — จำเป็นสำหรับคำศัพท์ที่ถูกสุ่มมาให้เรียน
+     group                — ชื่อกลุ่ม ใช้สร้างตัวเลือกหลอกที่สับสนได้จริง
+     phrase: true         — วลี ใช้เป็นตัวเลือกหลอกอย่างเดียว ไม่ถูกสุ่มมาเรียน */
 
-const fillBlankBank = [
-  { word: "Comprise", sentence: "The exam is said to _____ three sections: grammar, vocabulary, and reading." },
-  { word: "Contemporary", sentence: "She has a taste for _____ art rather than classical styles." },
-  { word: "Scrutinize", sentence: "Customs officers must _____ every document carefully before approval." },
-  { word: "Dispense", sentence: "The machine is used to _____ medicine to patients automatically." },
-  { word: "Ridicule", sentence: "He was afraid his classmates would _____ his accent." },
-  { word: "Venture", sentence: "Starting a new business is always a risky _____." },
-  { word: "Arbitrary", sentence: "The rule felt completely _____, with no clear reason behind it." },
-  { word: "Affluent", sentence: "They live in an _____ neighborhood full of large houses." },
-  { word: "Eccentric", sentence: "My uncle is a bit _____; he collects vintage typewriters." },
-  { word: "Bestow", sentence: "The university decided to _____ an honorary degree on the scientist." },
-  { word: "Vigorous", sentence: "The coach demanded a _____ effort from every player." },
-  { word: "Ample", sentence: "There was _____ time to finish the exam before the bell rang." },
-  { word: "Obstinate", sentence: "Despite everyone's advice, he remained _____ and refused to change his plan." },
-  { word: "Refrain", sentence: "Passengers are asked to _____ from smoking on the train." },
-  { word: "Vocation", sentence: "Teaching was more than a job to her; it was her true _____." },
-  { word: "Tedious", sentence: "Filling out the same form over and over was extremely _____." },
-  { word: "Coerce", sentence: "No one can _____ you into signing a contract against your will." },
-  { word: "Explicit", sentence: "The instructions were _____, leaving no room for misunderstanding." },
-  { word: "Ambiguous", sentence: "His answer was so _____ that no one knew if he agreed or not." },
-  { word: "Vague", sentence: "The directions she gave were too _____ to follow." },
-  { word: "Curtail", sentence: "The government decided to _____ public spending this year." },
-  { word: "Outraged", sentence: "Residents were _____ when they heard about the new tax." },
-  { word: "Shunned", sentence: "After the scandal, he was _____ by his former colleagues." },
-  { word: "Utterly", sentence: "The plan was _____ impossible to carry out in one day." },
-  { word: "Considerable", sentence: "The company spent a _____ amount of money on advertising." },
-  { word: "Impose", sentence: "The government plans to _____ a new tax on imported goods." },
-  { word: "Revenue", sentence: "The company's _____ increased by twenty percent last year." },
-  { word: "Milestone", sentence: "Passing the exam was an important _____ in her career." }
-];
+const DATA_URL = 'vocab.json';
+const GROUP_MIN = 4; // จำนวนสมาชิกขั้นต่ำที่ถือว่าเป็นกลุ่มที่ใช้เป็นตัวหลอกได้
 
-/* ============ vocab pool (all 118 words, deduped, no multi-word phrases) ============ */
-const vocabMap = new Map();
-questions.forEach(q => {
-  vocabMap.set(q.word.toLowerCase(), { word: q.word, pos: q.pos, meaning: q.meaning });
-  q.options.forEach(o => {
-    if (!vocabMap.has(o.text.toLowerCase())) vocabMap.set(o.text.toLowerCase(), { word: o.text, pos: o.pos, meaning: o.meaning });
-  });
-});
-const vocabBank = Array.from(vocabMap.values()).filter(v => !v.word.includes(' '));
+let vocabMap = new Map(); // key: word.toLowerCase() -> entry
+let vocabBank = [];       // คำศัพท์ที่ถูกสุ่มมาให้เรียน (ไม่รวมวลี)
+let srsPool = [];         // รายการสำหรับ SRS
 
-/* example sentences for every word */
-const exampleMap = {};
-fillBlankBank.forEach(f => { exampleMap[f.word.toLowerCase()] = f.sentence.replace('_____', f.word); });
-const extraExamples = {
-  "lucrative": "She left her job for a more lucrative career in finance.",
-  "confiscate": "Customs officers confiscated the smuggled goods at the border.",
-  "redundant": "Many workers were made redundant after the factory closed.",
-  "flaw": "The engineer found a serious flaw in the design.",
-  "onset": "Doctors noticed the onset of the illness early.",
-  "modern": "The museum features modern art from the last decade.",
-  "succumb": "He finally succumbed to the pressure and agreed.",
-  "isolated": "The village was isolated after the bridge collapsed.",
-  "distort": "The old mirror distorted his reflection.",
-  "sequence": "Follow the correct sequence of steps to install the software.",
-  "examine": "The doctor examined the patient carefully.",
-  "skeptical": "She remained skeptical about his excuse.",
-  "distribute": "Volunteers distributed food to the flood victims.",
-  "obscure": "The meaning of the poem was obscure to most readers.",
-  "banish": "The king banished the traitor from the kingdom.",
-  "incidence": "The incidence of the disease dropped after the vaccine.",
-  "frugal": "He lived a frugal life despite his wealth.",
-  "vital": "Clean water is vital for survival.",
-  "mock": "The other kids used to mock his accent.",
-  "assail": "Critics assailed the new policy immediately.",
-  "fluctuate": "Stock prices fluctuate every day.",
-  "risk": "Investing in startups involves a lot of risk.",
-  "dubious": "The salesman made some dubious claims about the product.",
-  "unreasonable": "His demands seemed completely unreasonable.",
-  "ceremony": "They held a small ceremony to mark the opening.",
-  "willing": "She was willing to help despite the risk.",
-  "patriotic": "He felt patriotic whenever he heard the national anthem.",
-  "invalid": "Your ticket is invalid after the expiry date.",
-  "guilty": "The jury found him guilty of fraud.",
-  "wealthy": "They moved into a wealthy neighborhood.",
-  "certain": "She was certain she had locked the door.",
-  "odd": "It was odd that he didn't show up.",
-  "useless": "The broken umbrella was useless in the storm.",
-  "logical": "His explanation was clear and logical.",
-  "forgive": "She decided to forgive her friend for the mistake.",
-  "exploit": "The company was accused of exploiting its workers.",
-  "provide": "The shelter provides food and beds for the homeless.",
-  "fear": "His fear of heights kept him off the roof.",
-  "delicate": "Handle the antique vase; it's very delicate.",
-  "energetic": "The puppy was energetic and never stopped running.",
-  "preserve": "They worked hard to preserve the old building.",
-  "enrich": "Reading widely can enrich your vocabulary.",
-  "plentiful": "Fresh fruit was plentiful at the market.",
-  "deficient": "His diet was deficient in vitamins.",
-  "construct": "Workers began to construct the new bridge.",
-  "valuable": "The painting turned out to be very valuable.",
-  "recall": "She couldn't recall where she left her keys.",
-  "prevent": "Regular exercise can prevent many illnesses.",
-  "harmless": "The spider looked scary but was harmless.",
-  "stubborn": "He was too stubborn to change his mind.",
-  "avoid": "Try to avoid heavy traffic during rush hour.",
-  "inborn": "Her talent for music seemed inborn.",
-  "encourage": "Teachers should encourage students to ask questions.",
-  "jealous": "He felt jealous when his friend got the promotion.",
-  "profession": "Medicine is a demanding profession.",
-  "intellectual": "The debate attracted many intellectuals.",
-  "flexible": "Our schedule is flexible, so we can meet anytime.",
-  "vision": "The CEO shared her vision for the company's future.",
-  "boring": "The lecture was so boring that students fell asleep.",
-  "expensive": "That restaurant is too expensive for a casual dinner.",
-  "proud": "Her parents were proud of her achievement.",
-  "unbearable": "The heat in the room was unbearable.",
-  "absurd": "The idea of walking to the moon sounds absurd.",
-  "force": "No one can force you to sign the contract.",
-  "peculiar": "There was a peculiar smell coming from the kitchen.",
-  "fate": "He believed it was fate that brought them together.",
-  "hidden": "There was a hidden message in the letter.",
-  "random": "The winner was chosen at random.",
-  "weak": "After the illness, he felt weak for weeks.",
-  "definite": "We need a definite answer by tomorrow.",
-  "cheap": "The tickets were surprisingly cheap this season.",
-  "precise": "The surgeon's movements were precise and careful.",
-  "loud": "The music was too loud to hear each other talk.",
-  "unclear": "His instructions were unclear, so we got lost.",
-  "fast": "The new train is much faster than the old one.",
-  "expand": "The company plans to expand into new markets.",
-  "repeat": "Could you repeat the question, please?",
-  "celebrate": "They celebrated the victory with a big party.",
-  "delighted": "She was delighted to receive the award.",
-  "confused": "I felt confused by the complicated instructions.",
-  "relaxed": "He looked relaxed after his vacation.",
-  "partially": "The project was only partially completed.",
-  "rarely": "He rarely eats fast food.",
-  "completely": "The building was completely destroyed by the fire.",
-  "occasionally": "We occasionally meet for coffee on weekends.",
-  "uncertain": "The future of the project remains uncertain.",
-  "illegal": "Parking here is illegal.",
-  "expense": "Travel expense will be reimbursed by the company.",
-  "debt": "They struggled to pay off their debt.",
-  "loss": "The company reported a huge loss last year."
-};
-Object.keys(extraExamples).forEach(k => { if (!exampleMap[k]) exampleMap[k] = extraExamples[k]; });
+function indexVocab(words) {
+  if (!Array.isArray(words) || words.length === 0) throw new Error('vocab.json: ไม่พบรายการคำศัพท์');
+
+  const seen = new Set();
+  const groupMembers = new Map();
+
+  for (const w of words) {
+    if (!w || typeof w.word !== 'string' || !w.word.trim()) throw new Error('vocab.json: พบรายการที่ไม่มีช่อง "word"');
+    const key = w.word.trim().toLowerCase();
+    if (seen.has(key)) throw new Error('vocab.json: คำซ้ำ — "' + w.word + '"');
+    seen.add(key);
+    vocabMap.set(key, w);
+    if (w.group) {
+      if (!groupMembers.has(w.group)) groupMembers.set(w.group, []);
+      groupMembers.get(w.group).push(w.word);
+    }
+  }
+
+  vocabBank = [];
+  for (const w of vocabMap.values()) {
+    if (w.phrase) continue; // วลีใช้เป็นตัวเลือกหลอกอย่างเดียว
+    if (!w.fill) throw new Error('vocab.json: คำ "' + w.word + '" ขาดฟิลด์ "fill"');
+    vocabBank.push(w);
+  }
+
+  srsPool = vocabBank.map(w => ({
+    word: w.word,
+    pos: w.pos,
+    meaning: w.meaning,
+    example: w.example || '',
+    fill: w.fill,
+    group: (w.group && groupMembers.get(w.group)) || []
+  }));
+}
+
+async function loadVocab() {
+  const res = await fetch(DATA_URL, { cache: 'no-cache' });
+  if (!res.ok) throw new Error('โหลด ' + DATA_URL + ' ไม่สำเร็จ (HTTP ' + res.status + ')');
+  const data = await res.json();
+  indexVocab(data.words);
+}
 
 function speak(word) {
   try {
@@ -366,33 +238,10 @@ function shuffleArr(arr) {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
-function getFillSentence(word) {
-  const curated = fillBlankBank.find(f => f.word.toLowerCase() === word.toLowerCase());
-  if (curated) return curated.sentence;
-  const ex = exampleMap[word.toLowerCase()];
-  if (!ex) return null;
-  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp(escaped, 'i');
-  if (!re.test(ex)) return null;
-  return ex.replace(re, '_____');
-}
-
 /* ============ SRS pool: every word, linked group info for smarter quiz distractors ============ */
-const srsPool = vocabBank.map(v => {
-  const asHead = questions.find(q => q.word.toLowerCase() === v.word.toLowerCase());
-  let group = null;
-  if (asHead) {
-    group = [asHead.word, ...asHead.options.map(o => o.text)];
-  } else {
-    const parentQ = questions.find(q => q.options.some(o => o.text.toLowerCase() === v.word.toLowerCase()));
-    if (parentQ) group = [parentQ.word, ...parentQ.options.map(o => o.text)];
-  }
-  return { word: v.word, pos: v.pos, meaning: v.meaning, example: exampleMap[v.word.toLowerCase()] || "", group };
-});
-
 function getQuizOptions(w) {
   let poolWords;
-  if (w.group && w.group.length >= 4) {
+  if (w.group && w.group.length >= GROUP_MIN) {
     poolWords = w.group.filter(g => g.toLowerCase() !== w.word.toLowerCase());
   } else {
     poolWords = [];
@@ -588,7 +437,7 @@ function renderFillStep(cfg) {
   fillAssignment = new Array(fillGroup.length).fill(null);
   fillSelected = 0; fillChecked = false;
   const sentencesHtml = fillGroup.map((w, idx) => {
-    const sentence = getFillSentence(w.word) || `______ (${w.word})`;
+    const sentence = w.fill || `______ (${w.word})`;
     const parts = sentence.split('_____');
     return `<div class="fillset-item"><span class="fillset-num">${idx + 1}.</span>${parts[0]}<span class="blank-slot empty" data-idx="${idx}" onclick="onBlankClick(${idx})">เลือกคำ</span>${parts[1] || ''}</div>`;
   }).join('');
@@ -715,8 +564,31 @@ function finishTabRound() {
 }
 
 /* ============ init ============ */
-loadState();
-startTabRound(1);
+function bootError(err) {
+  const msg = document.getElementById('bootMsg');
+  const isFile = location.protocol === 'file:';
+  msg.innerHTML = '<div class="boot-err">โหลดข้อมูลไม่สำเร็จ</div>'
+    + (isFile
+      ? '<div>เปิดไฟล์นี้โดยตรงไม่ได้ เพราะเบราว์เซอร์ไม่อนุญาตให้อ่าน <code>vocab.json</code> จาก <code>file://</code>'
+        + '<br>กรุณาเปิดผ่านเว็บเซิร์ฟเวอร์ เช่น <code>npx serve .</code> แล้วเข้า <code>localhost:3000</code></div>'
+      : '<div>ตรวจสอบว่าไฟล์ <code>vocab.json</code> อยู่ข้าง ๆ ไฟล์นี้ และรูปแบบ JSON ถูกต้อง</div>');
+  const detail = document.createElement('div');
+  detail.style.marginTop = '12px';
+  detail.textContent = (err && err.message) || String(err);
+  msg.appendChild(detail);
+}
+
+(async function init() {
+  try {
+    await loadVocab();
+    loadState();
+    document.getElementById('boot').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    startTabRound(1);
+  } catch (err) {
+    bootError(err);
+  }
+})();
 </script>
 </body>
 </html>
